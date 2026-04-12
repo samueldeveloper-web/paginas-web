@@ -1,0 +1,11 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" rx="28" fill="#0A100A"/>
+  <circle cx="126" cy="92" r="104" fill="#A7FF45" fill-opacity=".12"/>
+  <rect x="184" y="150" width="236" height="44" rx="15" fill="#6B755E"/>
+  <rect x="379" y="161" width="121" height="17" rx="8.5" fill="#86FF6A"/>
+  <path d="M217 195H387L351 240H253L217 195Z" fill="#384034"/>
+  <path d="M263 238H352L338 306C335 326 314 341 293 335C275 330 261 315 260 296L263 238Z" fill="#515A4D"/>
+  <path d="M214 188L195 238H235L250 188H214Z" fill="#2A3129"/>
+  <rect x="170" y="287" width="308" height="3" fill="#7DFF5E" fill-opacity=".22"/>
+  <text x="38" y="68" fill="#E8FFE2" font-family="Arial, sans-serif" font-size="38" font-weight="700">TREX DEFENSE</text>
+</svg>

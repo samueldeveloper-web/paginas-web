@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TREX | Armas Deportivas</title>
+    <meta
+      name="description"
+      content="TREX: tienda de armas deportivas, aire comprimido, airsoft y accesorios con una identidad visual oscura y verde neon."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <div>
+            <p class="eyebrow">Armas deportivas</p>
+            <a class="brand-name" href="#inicio">TREX</a>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a href="#categorias">Categorias</a>
+          <a href="#destacados">Destacados</a>
+          <a href="#beneficios">Beneficios</a>
+          <a href="#contacto">Contacto</a>
+        </nav>
+
+        <a class="cta-chip" href="#catalogo">Ver catalogo</a>
+
+        <button class="cart-trigger" type="button" aria-expanded="false" aria-controls="cart-panel">
+          Carrito
+          <span class="cart-count" id="cart-count">0</span>
+        </button>
+      </header>
+
+      <aside class="cart-panel" id="cart-panel" aria-hidden="true">
+        <div class="cart-panel-header">
+          <div>
+            <p class="eyebrow">Compra rapida</p>
+            <h2>Carrito TREX</h2>
+          </div>
+          <button class="cart-close" type="button" aria-label="Cerrar carrito">x</button>
+        </div>
+
+        <div class="cart-items" id="cart-items">
+          <p class="cart-empty">Tu carrito esta vacio.</p>
+        </div>
+
+        <div class="cart-summary">
+          <div class="cart-summary-row">
+            <span>Total</span>
+            <strong id="cart-total">$ 0</strong>
+          </div>
+          <button class="btn btn-primary cart-checkout" type="button">Finalizar pedido</button>
+        </div>
+      </aside>
+
+      <div class="cart-overlay" id="cart-overlay" hidden></div>
+
+      <main id="inicio">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Tienda premium de tiro deportivo</p>
+            <h1>TREX: potencia deportiva con imagen agresiva, moderna y memorable.</h1>
+            <p class="hero-text">
+              Una portada inspirada en la estructura comercial de grandes tiendas
+              del sector, ahora aterrizada a la identidad TREX con fondo negro,
+              verdes electricos y una presencia visual mas contundente.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#destacados">Comprar ahora</a>
+              <a class="btn btn-secondary" href="#categorias">Explorar lineas</a>
+            </div>
+
+            <div class="hero-metrics">
+              <article>
+                <strong>120+</strong>
+                <span>Referencias deportivas</span>
+              </article>
+              <article>
+                <strong>24h</strong>
+                <span>Atencion comercial</span>
+              </article>
+              <article>
+                <strong>5/5</strong>
+                <span>Asesoria especializada</span>
+              </article>
+            </div>
+          </div>
+
+          <div class="hero-panel">
+            <div class="panel-card panel-card-accent">
+              <img class="hero-visual" src="modelo.jpeg" alt="Modelo de catalogo TREX" />
+              <p class="panel-label">Coleccion TREX</p>
+              <h2>Rifles, pistolas y accesorios con ADN tactico y energia neon.</h2>
+              <a href="#catalogo">Descubrir seleccion</a>
+            </div>
+            <div class="panel-grid">
+              <article class="panel-card">
+                <p class="panel-label">Linea destacada</p>
+                <h3>Aire comprimido</h3>
+                <span>Rifles de quiebre, PCP y CO2</span>
+              </article>
+              <article class="panel-card">
+                <p class="panel-label">Uso recreativo</p>
+                <h3>Airsoft Pro</h3>
+                <span>Replicas, cargadores y proteccion</span>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="category-strip" id="categorias">
+          <div class="section-heading">
+            <p class="eyebrow">Categorias principales</p>
+            <h2>Una portada pensada para vender por familias de producto.</h2>
+          </div>
+
+          <div class="category-grid">
+            <article class="category-card">
+              <span>01</span>
+              <h3>Armas traumaticas</h3>
+              <p>Pistolas, revolveres y accesorios con presencia visual fuerte.</p>
+            </article>
+            <article class="category-card">
+              <span>02</span>
+              <h3>Aire comprimido</h3>
+              <p>Rifles, pistolas y municiones para tiro deportivo y practica.</p>
+            </article>
+            <article class="category-card">
+              <span>03</span>
+              <h3>Airsoft tactico</h3>
+              <p>Replicas, BBs, chalecos, cascos y plataformas de juego.</p>
+            </article>
+            <article class="category-card">
+              <span>04</span>
+              <h3>Accesorios</h3>
+              <p>Miras, linternas, estuches, protectores y repuestos.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="featured-products" id="destacados">
+          <div class="section-heading">
+            <p class="eyebrow">Productos destacados</p>
+            <h2>Vitrina de tarjetas tipo e-commerce con enfoque inmediato en compra.</h2>
+          </div>
+
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-badge">Nuevo</div>
+              <div class="product-art product-art-1"></div>
+              <div class="product-info">
+                <p class="product-category">Airsoft</p>
+                <h3>ASG CZ P-09</h3>
+                <p>Pistola de perfil tactico con presentacion fuerte y fondo verde TREX.</p>
+                <div class="product-footer">
+                  <strong>$ 890.000</strong>
+                  <button
+                    class="add-to-cart"
+                    type="button"
+                    data-id="asg-cz-p09"
+                    data-name="ASG CZ P-09"
+                    data-price="890000"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-badge offer">Oferta</div>
+              <div class="product-art product-art-2"></div>
+              <div class="product-info">
+                <p class="product-category">Traumatica</p>
+                <h3>ASG Dan Wesson 6PL Silver</h3>
+                <p>Revolver de impacto visual premium con accesorios y acabado metalico.</p>
+                <div class="product-footer">
+                  <strong>$ 1.450.000</strong>
+                  <button
+                    class="add-to-cart"
+                    type="button"
+                    data-id="asg-dan-wesson-6pl"
+                    data-name="ASG Dan Wesson 6PL Silver"
+                    data-price="1450000"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="product-card">
+              <div class="product-badge">Top</div>
+              <div class="product-art product-art-3"></div>
+              <div class="product-info">
+                <p class="product-category">Clasica</p>
+                <h3>Walther P38</h3>
+                <p>Modelo iconico con empunadura en madera y perfil de coleccion.</p>
+                <div class="product-footer">
+                  <strong>$ 1.190.000</strong>
+                  <button
+                    class="add-to-cart"
+                    type="button"
+                    data-id="walther-p38"
+                    data-name="Walther P38"
+                    data-price="1190000"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="catalog-highlight" id="catalogo">
+          <div class="catalog-copy">
+            <p class="eyebrow">Estilo de catalogo</p>
+            <h2>Diseno listo para seguir creciendo hacia una tienda completa.</h2>
+            <p>
+              Esta base ya deja montado un home comercial: hero, categorias,
+              productos, propuesta de valor y contacto. Desde aqui podemos
+              convertirlo en catalogo real, carrito o panel administrable.
+            </p>
+          </div>
+
+          <div class="catalog-list">
+            <article>
+              <strong>01</strong>
+              <span>Menu orientado a lineas de producto</span>
+            </article>
+            <article>
+              <strong>02</strong>
+              <span>Bloques oscuros con acentos verde neon</span>
+            </article>
+            <article>
+              <strong>03</strong>
+              <span>Tarjetas preparadas para mas referencias</span>
+            </article>
+          </div>
+        </section>
+
+        <section class="benefits" id="beneficios">
+          <div class="section-heading">
+            <p class="eyebrow">Por que funciona</p>
+            <h2>Un lenguaje visual comercial que transmite confianza y especialidad.</h2>
+          </div>
+
+          <div class="benefit-grid">
+            <article>
+              <h3>Estetica tactica</h3>
+              <p>Sombras densas, texturas sutiles y bloques contundentes.</p>
+            </article>
+            <article>
+              <h3>Jerarquia clara</h3>
+              <p>Primero categorias, luego destacados y despues conversion.</p>
+            </article>
+            <article>
+              <h3>Responsive</h3>
+              <p>Se adapta a celular con menu plegable y grillas fluidas.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer" id="contacto">
+        <div>
+          <p class="eyebrow">Contacto comercial</p>
+          <h2>TREX listo para vender con una identidad mas fuerte.</h2>
+        </div>
+
+        <div class="footer-actions">
+          <a class="btn btn-primary" href="mailto:ventas@trex.com">ventas@trex.com</a>
+          <a class="btn btn-secondary" href="tel:+573001112233">+57 300 111 2233</a>
+        </div>
+
+        <p class="footer-note">
+          Copyright <span id="year"></span> TREX. Diseno de muestra inspirado en la estructura comercial del sector.
+        </p>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

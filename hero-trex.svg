@@ -1,0 +1,29 @@
+<svg width="900" height="720" viewBox="0 0 900 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="900" height="720" fill="#050805"/>
+  <circle cx="660" cy="120" r="180" fill="url(#glow)"/>
+  <circle cx="200" cy="590" r="210" fill="url(#glow2)"/>
+  <path d="M529 193C611 166 674 212 706 277C730 325 737 401 686 458C627 524 498 556 373 524C280 500 232 429 254 354C279 266 430 224 529 193Z" fill="#091009" stroke="#72FF56" stroke-opacity=".45" stroke-width="2"/>
+  <path d="M343 333C365 286 419 253 485 237C568 218 634 245 662 303C687 354 667 409 620 448C558 500 446 515 359 475C314 454 286 418 284 377C282 361 289 343 343 333Z" fill="#0C170B"/>
+  <path d="M505 253L572 281L628 335L620 371L577 395L498 405L425 396L378 364L389 318L434 280L505 253Z" fill="#76FF59" fill-opacity=".12" stroke="#9BFF74" stroke-width="2"/>
+  <path d="M606 307C634 314 651 338 652 363C653 394 631 412 596 415C585 416 569 415 554 410C564 398 571 383 573 366C576 342 567 319 554 301C574 299 590 301 606 307Z" fill="#0A100A" stroke="#81FF65" stroke-opacity=".35"/>
+  <path d="M396 317C429 294 469 282 514 279C510 302 499 322 478 334C451 349 414 352 385 344C384 334 388 323 396 317Z" fill="#7BFF5E" fill-opacity=".15"/>
+  <path d="M347 350C355 332 378 319 403 319C433 319 455 336 458 360C463 399 417 423 365 409C344 403 328 392 322 379C315 369 319 359 347 350Z" fill="#0B120B" stroke="#72FF56" stroke-opacity=".3"/>
+  <path d="M330 386L602 411" stroke="#77FF5A" stroke-opacity=".28" stroke-width="2"/>
+  <path d="M394 412L419 458L446 414L394 412Z" fill="#A9FF82"/>
+  <path d="M448 414L476 462L497 416L448 414Z" fill="#A9FF82"/>
+  <path d="M501 416L522 461L547 417L501 416Z" fill="#A9FF82"/>
+  <path d="M552 417L572 454L595 418L552 417Z" fill="#A9FF82"/>
+  <path d="M329 541C432 570 580 565 677 518" stroke="#72FF56" stroke-opacity=".25" stroke-width="3"/>
+  <text x="76" y="114" fill="#E7FFE1" font-family="Arial, sans-serif" font-size="84" font-weight="700" letter-spacing="8">TREX</text>
+  <text x="78" y="160" fill="#7DFF5E" font-family="Arial, sans-serif" font-size="24" letter-spacing="6">ARMAS DEPORTIVAS</text>
+  <defs>
+    <radialGradient id="glow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(660 120) rotate(90) scale(180)">
+      <stop stop-color="#76FF59" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#76FF59" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(200 590) rotate(90) scale(210)">
+      <stop stop-color="#76FF59" stop-opacity=".14"/>
+      <stop offset="1" stop-color="#76FF59" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

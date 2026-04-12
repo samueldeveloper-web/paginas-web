@@ -1,0 +1,14 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" rx="28" fill="#071007"/>
+  <circle cx="520" cy="104" r="110" fill="#72FF56" fill-opacity=".1"/>
+  <rect x="134" y="168" width="273" height="18" rx="9" fill="#99FF7A"/>
+  <rect x="396" y="173" width="123" height="8" rx="4" fill="#7BFF5E"/>
+  <rect x="109" y="156" width="49" height="39" rx="10" fill="#5C6558"/>
+  <path d="M175 189H235L290 226H240L175 189Z" fill="#2E372C"/>
+  <path d="M254 189H305V248H276L254 189Z" fill="#495146"/>
+  <path d="M307 189H351V261H332L307 189Z" fill="#3B4438"/>
+  <path d="M330 261H365L398 317H362L330 261Z" fill="#5A6256"/>
+  <rect x="176" y="132" width="93" height="14" rx="7" fill="#55614E"/>
+  <rect x="95" y="295" width="424" height="3" fill="#7DFF5E" fill-opacity=".22"/>
+  <text x="38" y="68" fill="#E8FFE2" font-family="Arial, sans-serif" font-size="38" font-weight="700">TREX AIRSOFT</text>
+</svg>

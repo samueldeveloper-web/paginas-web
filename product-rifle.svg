@@ -1,0 +1,15 @@
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="640" height="420" rx="28" fill="#091009"/>
+  <circle cx="520" cy="90" r="110" fill="#72FF56" fill-opacity=".12"/>
+  <rect x="142" y="171" width="267" height="18" rx="9" fill="#A2FF83"/>
+  <rect x="385" y="177" width="125" height="8" rx="4" fill="#84FF67"/>
+  <rect x="102" y="163" width="61" height="34" rx="10" fill="#6D745D"/>
+  <rect x="155" y="151" width="114" height="14" rx="7" fill="#56634D"/>
+  <path d="M267 165H340L360 180H267V165Z" fill="#6D745D"/>
+  <path d="M246 188H302V214L278 236H246V188Z" fill="#384135"/>
+  <path d="M126 185H181L198 220H151L126 185Z" fill="#495245"/>
+  <path d="M195 221H271L344 278H300L195 221Z" fill="#31392F"/>
+  <path d="M337 279H379L418 320H377L337 279Z" fill="#4C5648"/>
+  <rect x="110" y="293" width="415" height="3" fill="#7DFF5E" fill-opacity=".25"/>
+  <text x="38" y="68" fill="#E8FFE2" font-family="Arial, sans-serif" font-size="38" font-weight="700">TREX PCP</text>
+</svg>
