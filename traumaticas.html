@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-category-href="traumaticas.html">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -37,6 +37,7 @@
           <a href="index.html#destacados">Destacados</a>
           <a href="index.html#beneficios">Beneficios</a>
           <a href="index.html#contacto">Contacto</a>
+          <a href="admin.html">Admin</a>
         </nav>
 
         <a class="cta-chip" href="index.html">Volver al inicio</a>
@@ -51,9 +52,9 @@
       <main class="cart-page">
         <section class="cart-hero">
           <div>
-            <p class="eyebrow">Categoria TREX</p>
-            <h1>Armas traumaticas</h1>
-            <p class="hero-text">
+            <p class="eyebrow" id="category-tag">Categoria TREX</p>
+            <h1 id="category-title">Armas traumaticas</h1>
+            <p class="hero-text" id="category-description">
               Pistolas y revolveres de alto impacto visual, pensados para una
               exhibicion comercial fuerte y una navegacion clara.
             </p>
@@ -64,31 +65,9 @@
         <section class="featured-products">
           <div class="section-heading">
             <p class="eyebrow">Seleccion</p>
-            <h2>Modelos con presencia fuerte y enfoque tactico.</h2>
+            <h2 id="category-heading">Modelos con presencia fuerte y enfoque tactico.</h2>
           </div>
-          <div class="product-grid">
-            <article class="product-card">
-              <div class="product-badge offer">Oferta</div>
-              <div class="product-art product-art-2"></div>
-              <div class="product-info">
-                <p class="product-category">Traumatica</p>
-                <h3>ASG Dan Wesson 6PL Silver</h3>
-                <p>Revolver metalico con presentacion premium y accesorios incluidos.</p>
-                <div class="product-footer">
-                  <strong>$ 1.450.000</strong>
-                  <button
-                    class="add-to-cart"
-                    type="button"
-                    data-id="asg-dan-wesson-6pl"
-                    data-name="ASG Dan Wesson 6PL Silver"
-                    data-price="1450000"
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
-              </div>
-            </article>
-          </div>
+          <div class="product-grid" id="category-product-grid"></div>
         </section>
       </main>
     </div>

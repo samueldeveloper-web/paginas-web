@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Categorias | TREX</title>
+    <meta
+      name="description"
+      content="Panel admin CRUD para crear, editar y eliminar categorias de TREX."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <div>
+            <p class="eyebrow">Panel de control</p>
+            <a class="brand-name" href="index.html">TREX Admin</a>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a href="index.html">Inicio</a>
+          <a href="index.html#categorias">Categorias</a>
+          <a href="carrito.html">Carrito</a>
+          <a href="admin.html">Admin</a>
+        </nav>
+
+        <a class="cta-chip" href="index.html">Ver sitio</a>
+
+        <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
+          <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+          <span>Carrito</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </header>
+
+      <main class="admin-page">
+        <section class="admin-hero">
+          <div>
+            <p class="eyebrow">CRUD Categorias</p>
+            <h1>Administra las categorias de la portada.</h1>
+            <p class="hero-text">
+              Desde aqui puedes crear, editar y eliminar categorias. Los cambios
+              se guardan en el navegador y se reflejan en la web principal.
+            </p>
+          </div>
+          <button class="btn btn-secondary" id="reset-categories" type="button">Restaurar categorias base</button>
+        </section>
+
+        <section class="admin-layout">
+          <section class="admin-card">
+            <div class="section-heading">
+              <p class="eyebrow">Formulario</p>
+              <h2>Crear o editar categoria</h2>
+            </div>
+
+            <form class="admin-form" id="category-form">
+              <input type="hidden" id="category-id" />
+
+              <label class="admin-field">
+                <span>Numero</span>
+                <input id="category-number" type="text" placeholder="01" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Titulo</span>
+                <input id="category-title" type="text" placeholder="Armas traumaticas" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Descripcion</span>
+                <textarea id="category-description" rows="4" placeholder="Describe la categoria" required></textarea>
+              </label>
+
+              <label class="admin-field">
+                <span>Enlace</span>
+                <input id="category-href" type="text" placeholder="traumaticas.html" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Etiqueta superior</span>
+                <input id="category-tag" type="text" placeholder="Categoria TREX" />
+              </label>
+
+              <div class="admin-actions">
+                <button class="btn btn-primary" type="submit" id="category-submit">Guardar categoria</button>
+                <button class="btn btn-secondary" type="button" id="category-cancel">Limpiar</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="admin-card">
+            <div class="section-heading">
+              <p class="eyebrow">Listado</p>
+              <h2>Categorias actuales</h2>
+            </div>
+
+            <div class="admin-list" id="admin-category-list">
+              <p class="cart-empty">No hay categorias configuradas.</p>
+            </div>
+          </section>
+        </section>
+
+        <section class="admin-layout">
+          <section class="admin-card">
+            <div class="section-heading">
+              <p class="eyebrow">CRUD Productos</p>
+              <h2>Crear o editar producto</h2>
+            </div>
+
+            <form class="admin-form" id="product-form">
+              <input type="hidden" id="product-id" />
+
+              <label class="admin-field">
+                <span>Nombre</span>
+                <input id="product-name" type="text" placeholder="ASG CZ P-09" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Categoria visible</span>
+                <input id="product-category-label" type="text" placeholder="Airsoft" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Categoria destino</span>
+                <select id="product-category-href" required></select>
+              </label>
+
+              <label class="admin-field">
+                <span>Precio</span>
+                <input id="product-price" type="number" min="0" step="1" placeholder="890000" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Descripcion</span>
+                <textarea id="product-description" rows="4" placeholder="Describe el producto" required></textarea>
+              </label>
+
+              <label class="admin-field">
+                <span>Imagen</span>
+                <input id="product-image-src" type="text" placeholder="ASGCZP-09.jpeg" required />
+              </label>
+
+              <label class="admin-field">
+                <span>Posicion imagen</span>
+                <input id="product-image-position" type="text" placeholder="center 38%" />
+              </label>
+
+              <label class="admin-field">
+                <span>Badge</span>
+                <input id="product-badge" type="text" placeholder="Nuevo" />
+              </label>
+
+              <label class="admin-field">
+                <span>Tipo badge</span>
+                <select id="product-badge-type">
+                  <option value="">Normal</option>
+                  <option value="offer">Oferta</option>
+                </select>
+              </label>
+
+              <label class="admin-field admin-toggle">
+                <input id="product-featured" type="checkbox" checked />
+                <span>Mostrar en destacados del inicio</span>
+              </label>
+
+              <div class="admin-actions">
+                <button class="btn btn-primary" type="submit">Guardar producto</button>
+                <button class="btn btn-secondary" type="button" id="product-cancel">Limpiar</button>
+              </div>
+            </form>
+          </section>
+
+          <section class="admin-card">
+            <div class="section-heading">
+              <p class="eyebrow">Listado</p>
+              <h2>Productos actuales</h2>
+            </div>
+
+            <div class="admin-list" id="admin-product-list">
+              <p class="cart-empty">No hay productos configurados.</p>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

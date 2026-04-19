@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-category-href="aire-comprimido.html">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -37,6 +37,7 @@
           <a href="index.html#destacados">Destacados</a>
           <a href="index.html#beneficios">Beneficios</a>
           <a href="index.html#contacto">Contacto</a>
+          <a href="admin.html">Admin</a>
         </nav>
 
         <a class="cta-chip" href="index.html">Volver al inicio</a>
@@ -51,9 +52,9 @@
       <main class="cart-page">
         <section class="cart-hero">
           <div>
-            <p class="eyebrow">Categoria TREX</p>
-            <h1>Aire comprimido</h1>
-            <p class="hero-text">
+            <p class="eyebrow" id="category-tag">Categoria TREX</p>
+            <h1 id="category-title">Aire comprimido</h1>
+            <p class="hero-text" id="category-description">
               Rifles y pistolas para practica, precision y experiencia deportiva
               con lenguaje visual sobrio y tecnico.
             </p>
@@ -64,31 +65,9 @@
         <section class="featured-products">
           <div class="section-heading">
             <p class="eyebrow">Seleccion</p>
-            <h2>Opciones destacadas para tiro deportivo y practica.</h2>
+            <h2 id="category-heading">Opciones destacadas para tiro deportivo y practica.</h2>
           </div>
-          <div class="product-grid">
-            <article class="product-card">
-              <div class="product-badge">Nuevo</div>
-              <div class="product-art product-art-1"></div>
-              <div class="product-info">
-                <p class="product-category">Aire comprimido</p>
-                <h3>ASG CZ P-09</h3>
-                <p>Pistola con apariencia tactica y presentacion de producto de alto contraste.</p>
-                <div class="product-footer">
-                  <strong>$ 890.000</strong>
-                  <button
-                    class="add-to-cart"
-                    type="button"
-                    data-id="asg-cz-p09"
-                    data-name="ASG CZ P-09"
-                    data-price="890000"
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
-              </div>
-            </article>
-          </div>
+          <div class="product-grid" id="category-product-grid"></div>
         </section>
       </main>
     </div>

@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-category-href="accesorios.html">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -37,6 +37,7 @@
           <a href="index.html#destacados">Destacados</a>
           <a href="index.html#beneficios">Beneficios</a>
           <a href="index.html#contacto">Contacto</a>
+          <a href="admin.html">Admin</a>
         </nav>
 
         <a class="cta-chip" href="index.html">Volver al inicio</a>
@@ -51,9 +52,9 @@
       <main class="cart-page">
         <section class="cart-hero">
           <div>
-            <p class="eyebrow">Categoria TREX</p>
-            <h1>Accesorios</h1>
-            <p class="hero-text">
+            <p class="eyebrow" id="category-tag">Categoria TREX</p>
+            <h1 id="category-title">Accesorios</h1>
+            <p class="hero-text" id="category-description">
               Miras, estuches, protecciones y complementos para una tienda
               deportiva con navegacion clara y visual potente.
             </p>
@@ -61,29 +62,12 @@
           <a class="btn btn-secondary" href="index.html#categorias">Ver mas categorias</a>
         </section>
 
-        <section class="catalog-highlight">
-          <div class="catalog-copy">
-            <p class="eyebrow">Linea complementaria</p>
-            <h2>Todo lo que completa la experiencia TREX.</h2>
-            <p>
-              Esta pagina queda lista para crecer con miras, linternas, estuches,
-              municion deportiva y elementos de proteccion.
-            </p>
+        <section class="featured-products">
+          <div class="section-heading">
+            <p class="eyebrow">Seleccion</p>
+            <h2 id="category-heading">Todo lo que completa la experiencia TREX.</h2>
           </div>
-          <div class="catalog-list">
-            <article>
-              <strong>01</strong>
-              <span>Miras y monturas</span>
-            </article>
-            <article>
-              <strong>02</strong>
-              <span>Estuches y proteccion</span>
-            </article>
-            <article>
-              <strong>03</strong>
-              <span>Complementos tacticos</span>
-            </article>
-          </div>
+          <div class="product-grid" id="category-product-grid"></div>
         </section>
       </main>
     </div>

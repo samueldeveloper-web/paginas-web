@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-category-href="airsoft.html">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -37,6 +37,7 @@
           <a href="index.html#destacados">Destacados</a>
           <a href="index.html#beneficios">Beneficios</a>
           <a href="index.html#contacto">Contacto</a>
+          <a href="admin.html">Admin</a>
         </nav>
 
         <a class="cta-chip" href="index.html">Volver al inicio</a>
@@ -51,9 +52,9 @@
       <main class="cart-page">
         <section class="cart-hero">
           <div>
-            <p class="eyebrow">Categoria TREX</p>
-            <h1>Airsoft tactico</h1>
-            <p class="hero-text">
+            <p class="eyebrow" id="category-tag">Categoria TREX</p>
+            <h1 id="category-title">Airsoft tactico</h1>
+            <p class="hero-text" id="category-description">
               Replica, proteccion y experiencia visual agresiva para una vitrina
               moderna de juego tactico y recreacion.
             </p>
@@ -64,31 +65,9 @@
         <section class="featured-products">
           <div class="section-heading">
             <p class="eyebrow">Seleccion</p>
-            <h2>Modelos tacticos para vitrina y compra rapida.</h2>
+            <h2 id="category-heading">Modelos tacticos para vitrina y compra rapida.</h2>
           </div>
-          <div class="product-grid">
-            <article class="product-card">
-              <div class="product-badge">Top</div>
-              <div class="product-art product-art-3"></div>
-              <div class="product-info">
-                <p class="product-category">Airsoft</p>
-                <h3>Walther P38</h3>
-                <p>Modelo clasico con gran presencia visual para coleccion y exhibicion.</p>
-                <div class="product-footer">
-                  <strong>$ 1.190.000</strong>
-                  <button
-                    class="add-to-cart"
-                    type="button"
-                    data-id="walther-p38"
-                    data-name="Walther P38"
-                    data-price="1190000"
-                  >
-                    Agregar al carrito
-                  </button>
-                </div>
-              </div>
-            </article>
-          </div>
+          <div class="product-grid" id="category-product-grid"></div>
         </section>
       </main>
     </div>
