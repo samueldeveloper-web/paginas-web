@@ -47,6 +47,12 @@ const storageKey = "trex-cart";
 const categoryStorageKey = "trex-categories";
 const productStorageKey = "trex-products";
 const whatsappNumber = "573116455682";
+const categoryPageOptions = [
+  { value: "traumaticas.html", label: "Armas traumaticas" },
+  { value: "aire-comprimido.html", label: "Aire comprimido" },
+  { value: "airsoft.html", label: "Airsoft tactico" },
+  { value: "accesorios.html", label: "Accesorios" },
+];
 const defaultCategories = [
   {
     id: "cat-traumaticas",
@@ -269,6 +275,16 @@ function saveProducts() {
   window.localStorage.setItem(productStorageKey, JSON.stringify(products));
 }
 
+function populateCategoryHrefOptions() {
+  if (!categoryHrefInput) {
+    return;
+  }
+
+  categoryHrefInput.innerHTML = categoryPageOptions
+    .map((option) => `<option value="${option.value}">${option.label} (${option.value})</option>`)
+    .join("");
+}
+
 function createProductCard(product) {
   const badgeClass = product.badgeType ? `product-badge ${product.badgeType}` : "product-badge";
   const safeBadge = product.badge || "Nuevo";
@@ -409,6 +425,7 @@ function resetCategoryForm() {
   }
 
   categoryForm.reset();
+  populateCategoryHrefOptions();
   if (categoryIdInput) {
     categoryIdInput.value = "";
   }
@@ -421,6 +438,7 @@ function populateCategoryForm(categoryId) {
     return;
   }
 
+  populateCategoryHrefOptions();
   categoryIdInput.value = category.id;
   categoryNumberInput.value = category.number;
   categoryTitleInput.value = category.title;
@@ -841,6 +859,7 @@ checkoutButtons.forEach((button) => {
   });
 });
 
+populateCategoryHrefOptions();
 renderCategories();
 populateProductCategoryOptions();
 renderAdminCategories();
