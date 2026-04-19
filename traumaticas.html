@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Armas Traumaticas | TREX</title>
+    <meta
+      name="description"
+      content="Categoria TREX de armas traumaticas con presentacion comercial y acceso al carrito."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <div>
+            <p class="eyebrow">Armas deportivas</p>
+            <a class="brand-name" href="index.html">TREX</a>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a href="index.html#categorias">Categorias</a>
+          <a href="index.html#destacados">Destacados</a>
+          <a href="index.html#beneficios">Beneficios</a>
+          <a href="index.html#contacto">Contacto</a>
+        </nav>
+
+        <a class="cta-chip" href="index.html">Volver al inicio</a>
+
+        <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
+          <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+          <span>Carrito</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </header>
+
+      <main class="cart-page">
+        <section class="cart-hero">
+          <div>
+            <p class="eyebrow">Categoria TREX</p>
+            <h1>Armas traumaticas</h1>
+            <p class="hero-text">
+              Pistolas y revolveres de alto impacto visual, pensados para una
+              exhibicion comercial fuerte y una navegacion clara.
+            </p>
+          </div>
+          <a class="btn btn-secondary" href="index.html#categorias">Ver mas categorias</a>
+        </section>
+
+        <section class="featured-products">
+          <div class="section-heading">
+            <p class="eyebrow">Seleccion</p>
+            <h2>Modelos con presencia fuerte y enfoque tactico.</h2>
+          </div>
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-badge offer">Oferta</div>
+              <div class="product-art product-art-2"></div>
+              <div class="product-info">
+                <p class="product-category">Traumatica</p>
+                <h3>ASG Dan Wesson 6PL Silver</h3>
+                <p>Revolver metalico con presentacion premium y accesorios incluidos.</p>
+                <div class="product-footer">
+                  <strong>$ 1.450.000</strong>
+                  <button
+                    class="add-to-cart"
+                    type="button"
+                    data-id="asg-dan-wesson-6pl"
+                    data-name="ASG Dan Wesson 6PL Silver"
+                    data-price="1450000"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

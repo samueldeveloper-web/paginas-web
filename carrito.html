@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Carrito | TREX</title>
+    <meta
+      name="description"
+      content="Carrito de compras TREX con resumen de productos, total y gestion de cantidades."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <div>
+            <p class="eyebrow">Armas deportivas</p>
+            <a class="brand-name" href="index.html">TREX</a>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a href="index.html#categorias">Categorias</a>
+          <a href="index.html#destacados">Destacados</a>
+          <a href="index.html#beneficios">Beneficios</a>
+          <a href="index.html#contacto">Contacto</a>
+        </nav>
+
+        <a class="cta-chip" href="index.html">Seguir comprando</a>
+
+        <a class="cart-trigger is-current" href="carrito.html" aria-label="Ver carrito de compras">
+          <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+          <span>Carrito</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </header>
+
+      <main class="cart-page">
+        <section class="cart-hero">
+          <div>
+            <p class="eyebrow">Pedido actual</p>
+            <h1>Tu carrito TREX en una pagina propia.</h1>
+            <p class="hero-text">
+              Aqui puedes revisar articulos, cantidades y total sin abrir una
+              pestaña nueva. Todo se mantiene en la misma navegacion del sitio.
+            </p>
+          </div>
+          <a class="btn btn-secondary" href="index.html#destacados">Volver a productos</a>
+        </section>
+
+        <section class="cart-layout">
+          <div class="cart-card">
+            <div class="section-heading">
+              <p class="eyebrow">Productos agregados</p>
+              <h2>Resumen del carrito</h2>
+            </div>
+            <div class="cart-items cart-items-page" id="cart-items">
+              <p class="cart-empty">Tu carrito esta vacio.</p>
+            </div>
+          </div>
+
+          <aside class="cart-card cart-summary-card">
+            <div class="section-heading">
+              <p class="eyebrow">Total de compra</p>
+              <h2>Resumen</h2>
+            </div>
+            <div class="cart-summary">
+              <div class="cart-summary-row">
+                <span>Productos</span>
+                <strong id="cart-items-total">0</strong>
+              </div>
+              <div class="cart-summary-row">
+                <span>Total</span>
+                <strong id="cart-total">$ 0</strong>
+              </div>
+              <button class="btn btn-primary cart-checkout" type="button">Finalizar pedido</button>
+              <button class="btn btn-secondary clear-cart" id="clear-cart" type="button">Vaciar carrito</button>
+            </div>
+          </aside>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

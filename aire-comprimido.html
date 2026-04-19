@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aire Comprimido | TREX</title>
+    <meta
+      name="description"
+      content="Categoria TREX de aire comprimido con visual comercial y acceso al carrito."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <div class="brand-lockup">
+          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <div>
+            <p class="eyebrow">Armas deportivas</p>
+            <a class="brand-name" href="index.html">TREX</a>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Abrir menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+        </button>
+
+        <nav class="main-nav">
+          <a href="index.html#categorias">Categorias</a>
+          <a href="index.html#destacados">Destacados</a>
+          <a href="index.html#beneficios">Beneficios</a>
+          <a href="index.html#contacto">Contacto</a>
+        </nav>
+
+        <a class="cta-chip" href="index.html">Volver al inicio</a>
+
+        <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
+          <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+          <span>Carrito</span>
+          <span class="cart-count" id="cart-count">0</span>
+        </a>
+      </header>
+
+      <main class="cart-page">
+        <section class="cart-hero">
+          <div>
+            <p class="eyebrow">Categoria TREX</p>
+            <h1>Aire comprimido</h1>
+            <p class="hero-text">
+              Rifles y pistolas para practica, precision y experiencia deportiva
+              con lenguaje visual sobrio y tecnico.
+            </p>
+          </div>
+          <a class="btn btn-secondary" href="index.html#categorias">Ver mas categorias</a>
+        </section>
+
+        <section class="featured-products">
+          <div class="section-heading">
+            <p class="eyebrow">Seleccion</p>
+            <h2>Opciones destacadas para tiro deportivo y practica.</h2>
+          </div>
+          <div class="product-grid">
+            <article class="product-card">
+              <div class="product-badge">Nuevo</div>
+              <div class="product-art product-art-1"></div>
+              <div class="product-info">
+                <p class="product-category">Aire comprimido</p>
+                <h3>ASG CZ P-09</h3>
+                <p>Pistola con apariencia tactica y presentacion de producto de alto contraste.</p>
+                <div class="product-footer">
+                  <strong>$ 890.000</strong>
+                  <button
+                    class="add-to-cart"
+                    type="button"
+                    data-id="asg-cz-p09"
+                    data-name="ASG CZ P-09"
+                    data-price="890000"
+                  >
+                    Agregar al carrito
+                  </button>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
