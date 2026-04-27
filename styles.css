@@ -545,6 +545,20 @@ a {
   color: var(--muted);
 }
 
+.admin-status {
+  margin: 16px 0 0;
+  color: var(--muted);
+}
+
+.admin-status.is-error {
+  color: #ffb4b4;
+}
+
+.auth-message {
+  margin-top: 22px;
+  padding: 30px;
+}
+
 .cart-hero,
 .cart-card {
   border: 1px solid var(--line);

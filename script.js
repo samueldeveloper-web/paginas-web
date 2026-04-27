@@ -1,20 +1,28 @@
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+
+const pageType = document.body.dataset.page ?? "public";
+const currentCategoryHref = document.body.dataset.categoryHref ?? "";
+
 const menuButton = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
 const year = document.querySelector("#year");
-const cartItemsContainer = document.querySelector("#cart-items");
-const cartTotal = document.querySelector("#cart-total");
-const cartCount = document.querySelector("#cart-count");
-const cartItemsTotal = document.querySelector("#cart-items-total");
-const clearCartButton = document.querySelector("#clear-cart");
-const categoryGrid = document.querySelector("#category-grid");
+
 const featuredProductGrid = document.querySelector("#featured-product-grid");
+const categoryGrid = document.querySelector("#category-grid");
 const categoryProductGrid = document.querySelector("#category-product-grid");
 const categoryTitle = document.querySelector("#category-title");
 const categoryDescription = document.querySelector("#category-description");
 const categoryTag = document.querySelector("#category-tag");
 const categoryHeading = document.querySelector("#category-heading");
+
+const cartItemsContainer = document.querySelector("#cart-items");
+const cartTotal = document.querySelector("#cart-total");
+const cartCount = document.querySelector("#cart-count");
+const cartItemsTotal = document.querySelector("#cart-items-total");
+const clearCartButton = document.querySelector("#clear-cart");
+const checkoutButtons = document.querySelectorAll(".cart-checkout");
+
 const categoryForm = document.querySelector("#category-form");
-const adminCategoryList = document.querySelector("#admin-category-list");
 const categoryIdInput = document.querySelector("#category-id");
 const categoryNumberInput = document.querySelector("#category-number");
 const categoryTitleInput = document.querySelector("#category-title");
@@ -23,12 +31,13 @@ const categoryHrefInput = document.querySelector("#category-href");
 const categoryTagInput = document.querySelector("#category-tag");
 const categoryCancelButton = document.querySelector("#category-cancel");
 const resetCategoriesButton = document.querySelector("#reset-categories");
+const adminCategoryList = document.querySelector("#admin-category-list");
+
 const productForm = document.querySelector("#product-form");
-const adminProductList = document.querySelector("#admin-product-list");
 const productIdInput = document.querySelector("#product-id");
 const productNameInput = document.querySelector("#product-name");
 const productCategoryLabelInput = document.querySelector("#product-category-label");
-const productCategoryHrefInput = document.querySelector("#product-category-href");
+const productCategoryIdInput = document.querySelector("#product-category-href");
 const productPriceInput = document.querySelector("#product-price");
 const productDescriptionInput = document.querySelector("#product-description");
 const productImageSrcInput = document.querySelector("#product-image-src");
@@ -37,15 +46,19 @@ const productBadgeInput = document.querySelector("#product-badge");
 const productBadgeTypeInput = document.querySelector("#product-badge-type");
 const productFeaturedInput = document.querySelector("#product-featured");
 const productCancelButton = document.querySelector("#product-cancel");
-const checkoutButtons = document.querySelectorAll(".cart-checkout");
-let quickCart;
-let quickCartBody;
-let quickCartTotal;
-let quickCartCount;
+const adminProductList = document.querySelector("#admin-product-list");
 
-const storageKey = "trex-cart";
-const categoryStorageKey = "trex-categories";
-const productStorageKey = "trex-products";
+const loginForm = document.querySelector("#login-form");
+const loginEmailInput = document.querySelector("#login-email");
+const loginPasswordInput = document.querySelector("#login-password");
+const loginStatus = document.querySelector("#login-status");
+
+const logoutButton = document.querySelector("#logout-button");
+const adminApp = document.querySelector("#admin-app");
+const authMessage = document.querySelector("#auth-message");
+const authStatus = document.querySelector("#auth-status");
+
+const cartStorageKey = "trex-cart";
 const whatsappNumber = "573116455682";
 const categoryPageOptions = [
   { value: "traumaticas.html", label: "Armas traumaticas" },
@@ -53,84 +66,31 @@ const categoryPageOptions = [
   { value: "airsoft.html", label: "Airsoft tactico" },
   { value: "accesorios.html", label: "Accesorios" },
 ];
-const defaultCategories = [
-  {
-    id: "cat-traumaticas",
-    number: "01",
-    title: "Armas traumaticas",
-    description: "Pistolas, revolveres y accesorios con presencia visual fuerte.",
-    href: "traumaticas.html",
-    tag: "Categoria TREX",
-  },
-  {
-    id: "cat-aire",
-    number: "02",
-    title: "Aire comprimido",
-    description: "Rifles, pistolas y municiones para tiro deportivo y practica.",
-    href: "aire-comprimido.html",
-    tag: "Categoria TREX",
-  },
-  {
-    id: "cat-airsoft",
-    number: "03",
-    title: "Airsoft tactico",
-    description: "Replicas, BBs, chalecos, cascos y plataformas de juego.",
-    href: "airsoft.html",
-    tag: "Categoria TREX",
-  },
-  {
-    id: "cat-accesorios",
-    number: "04",
-    title: "Accesorios",
-    description: "Miras, linternas, estuches, protectores y repuestos.",
-    href: "accesorios.html",
-    tag: "Categoria TREX",
-  },
-];
-const defaultProducts = [
-  {
-    id: "asg-cz-p09",
-    name: "ASG CZ P-09",
-    categoryLabel: "Airsoft",
-    categoryHref: "aire-comprimido.html",
-    price: 890000,
-    description: "Pistola de perfil tactico con presentacion fuerte y fondo verde TREX.",
-    imageSrc: "ASGCZP-09.jpeg",
-    imagePosition: "center 38%",
-    badge: "Nuevo",
-    badgeType: "",
-    featured: true,
-  },
-  {
-    id: "asg-dan-wesson-6pl",
-    name: "ASG Dan Wesson 6PL Silver",
-    categoryLabel: "Traumatica",
-    categoryHref: "traumaticas.html",
-    price: 1450000,
-    description: "Revolver de impacto visual premium con accesorios y acabado metalico.",
-    imageSrc: "ASGDAN.jpeg",
-    imagePosition: "center 36%",
-    badge: "Oferta",
-    badgeType: "offer",
-    featured: true,
-  },
-  {
-    id: "walther-p38",
-    name: "Walther P38",
-    categoryLabel: "Clasica",
-    categoryHref: "airsoft.html",
-    price: 1190000,
-    description: "Modelo iconico con empunadura en madera y perfil de coleccion.",
-    imageSrc: "waltherp38.jpeg",
-    imagePosition: "center 34%",
-    badge: "Top",
-    badgeType: "",
-    featured: true,
-  },
-];
+
+const config = window.TREX_CONFIG ?? {};
+const hasSupabaseConfig = Boolean(config.supabaseUrl && config.supabaseAnonKey);
+const supabase = hasSupabaseConfig
+  ? createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+      },
+    })
+  : null;
+
+let cart = loadCart();
+let categories = [];
+let products = [];
+let currentUser = null;
+let currentProfile = null;
+let quickCart;
+let quickCartBody;
+let quickCartTotal;
+let quickCartCount;
 
 function loadCart() {
-  const savedCart = window.localStorage.getItem(storageKey);
+  const savedCart = window.localStorage.getItem(cartStorageKey);
 
   if (!savedCart) {
     return [];
@@ -143,54 +103,34 @@ function loadCart() {
   }
 }
 
-let cart = loadCart();
-
-function loadCategories() {
-  const savedCategories = window.localStorage.getItem(categoryStorageKey);
-
-  if (!savedCategories) {
-    return [...defaultCategories];
-  }
-
-  try {
-    const parsed = JSON.parse(savedCategories);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [...defaultCategories];
-  } catch {
-    return [...defaultCategories];
-  }
+function saveCart() {
+  window.localStorage.setItem(cartStorageKey, JSON.stringify(cart));
 }
 
-let categories = loadCategories();
-
-function loadProducts() {
-  const savedProducts = window.localStorage.getItem(productStorageKey);
-
-  if (!savedProducts) {
-    return [...defaultProducts];
-  }
-
-  try {
-    const parsed = JSON.parse(savedProducts);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : [...defaultProducts];
-  } catch {
-    return [...defaultProducts];
-  }
+function formatCurrency(value) {
+  return new Intl.NumberFormat("es-CO", {
+    style: "currency",
+    currency: "COP",
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
-let products = loadProducts();
-
-function ensureQuickCart() {
-  if (document.body.classList.contains("has-quick-cart")) {
+function setStatusMessage(element, message, isError = false) {
+  if (!element) {
     return;
   }
 
-  if (window.location.pathname.endsWith("/carrito.html") || window.location.pathname.endsWith("carrito.html")) {
+  element.textContent = message;
+  element.classList.toggle("is-error", isError);
+}
+
+function ensureQuickCart() {
+  if (pageType === "admin" || pageType === "login" || document.body.classList.contains("has-quick-cart")) {
     return;
   }
 
   const widget = document.createElement("aside");
   widget.className = "quick-cart";
-  widget.id = "quick-cart";
   widget.hidden = true;
   widget.innerHTML = `
     <div class="quick-cart-header">
@@ -220,7 +160,7 @@ function ensureQuickCart() {
   quickCartCount = widget.querySelector("#quick-cart-count");
 }
 
-function getItemMarkup(item, compact = false) {
+function getCartItemMarkup(item, compact = false) {
   return `
     <article class="${compact ? "quick-cart-item" : "cart-item"}">
       <div class="cart-item-info">
@@ -241,363 +181,15 @@ function getItemMarkup(item, compact = false) {
 
 function bindCartControls(scope) {
   scope.querySelectorAll("[data-action='increase']").forEach((button) => {
-    button.addEventListener("click", () => {
-      updateQuantity(button.dataset.id ?? "", 1);
-    });
+    button.addEventListener("click", () => updateQuantity(button.dataset.id ?? "", 1));
   });
 
   scope.querySelectorAll("[data-action='decrease']").forEach((button) => {
-    button.addEventListener("click", () => {
-      updateQuantity(button.dataset.id ?? "", -1);
-    });
+    button.addEventListener("click", () => updateQuantity(button.dataset.id ?? "", -1));
   });
 
   scope.querySelectorAll(".cart-remove").forEach((button) => {
-    button.addEventListener("click", () => {
-      removeFromCart(button.dataset.removeId);
-    });
-  });
-}
-
-function formatCurrency(value) {
-  return new Intl.NumberFormat("es-CO", {
-    style: "currency",
-    currency: "COP",
-    maximumFractionDigits: 0,
-  }).format(value);
-}
-
-function saveCategories() {
-  window.localStorage.setItem(categoryStorageKey, JSON.stringify(categories));
-}
-
-function saveProducts() {
-  window.localStorage.setItem(productStorageKey, JSON.stringify(products));
-}
-
-function populateCategoryHrefOptions() {
-  if (!categoryHrefInput) {
-    return;
-  }
-
-  categoryHrefInput.innerHTML = categoryPageOptions
-    .map((option) => `<option value="${option.value}">${option.label} (${option.value})</option>`)
-    .join("");
-}
-
-function createProductCard(product) {
-  const badgeClass = product.badgeType ? `product-badge ${product.badgeType}` : "product-badge";
-  const safeBadge = product.badge || "Nuevo";
-  const backgroundStyle = [
-    "linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.68))",
-    `url("${product.imageSrc}")`,
-    "linear-gradient(145deg, #18271c, #070907)",
-  ].join(", ");
-  const position = product.imagePosition || "center";
-
-  return `
-    <article class="product-card">
-      <div class="${badgeClass}">${safeBadge}</div>
-      <div class="product-art" style="background-image: ${backgroundStyle}; background-position: center, ${position}, center; background-size: cover, cover, cover;"></div>
-      <div class="product-info">
-        <p class="product-category">${product.categoryLabel}</p>
-        <h3>${product.name}</h3>
-        <p>${product.description}</p>
-        <div class="product-footer">
-          <strong>${formatCurrency(product.price)}</strong>
-          <button
-            class="add-to-cart"
-            type="button"
-            data-id="${product.id}"
-            data-name="${product.name}"
-            data-price="${product.price}"
-          >
-            Agregar al carrito
-          </button>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function bindAddToCart(scope = document) {
-  scope.querySelectorAll(".add-to-cart").forEach((button) => {
-    button.addEventListener("click", () => {
-      addToCart({
-        id: button.dataset.id ?? "",
-        name: button.dataset.name ?? "Producto TREX",
-        price: Number(button.dataset.price ?? 0),
-      });
-    });
-  });
-}
-
-function renderCategories() {
-  if (!categoryGrid) {
-    return;
-  }
-
-  if (categories.length === 0) {
-    categoryGrid.innerHTML = '<p class="cart-empty">No hay categorias configuradas.</p>';
-    return;
-  }
-
-  categoryGrid.innerHTML = categories
-    .map(
-      (category) => `
-        <a class="category-link" href="${category.href}">
-          <article class="category-card">
-            <span>${category.number}</span>
-            <h3>${category.title}</h3>
-            <p>${category.description}</p>
-          </article>
-        </a>
-      `
-    )
-    .join("");
-}
-
-function populateProductCategoryOptions() {
-  if (!productCategoryHrefInput) {
-    return;
-  }
-
-  productCategoryHrefInput.innerHTML = categories
-    .map((category) => `<option value="${category.href}">${category.title} (${category.href})</option>`)
-    .join("");
-}
-
-function renderFeaturedProducts() {
-  if (!featuredProductGrid) {
-    return;
-  }
-
-  const featuredProducts = products.filter((product) => product.featured).slice(0, 6);
-
-  if (featuredProducts.length === 0) {
-    featuredProductGrid.innerHTML = '<p class="product-empty">No hay productos destacados configurados.</p>';
-    return;
-  }
-
-  featuredProductGrid.innerHTML = featuredProducts.map((product) => createProductCard(product)).join("");
-  bindAddToCart(featuredProductGrid);
-}
-
-function renderCategoryPage() {
-  if (!categoryProductGrid) {
-    return;
-  }
-
-  const currentCategoryHref = document.body.dataset.categoryHref ?? "";
-  const currentCategory = categories.find((item) => item.href === currentCategoryHref);
-  const categoryProducts = products.filter((product) => product.categoryHref === currentCategoryHref);
-
-  if (currentCategory) {
-    if (categoryTitle) {
-      categoryTitle.textContent = currentCategory.title;
-    }
-
-    if (categoryDescription) {
-      categoryDescription.textContent = currentCategory.description;
-    }
-
-    if (categoryTag) {
-      categoryTag.textContent = currentCategory.tag || "Categoria TREX";
-    }
-
-    if (categoryHeading) {
-      categoryHeading.textContent = `Productos disponibles en ${currentCategory.title}.`;
-    }
-  }
-
-  if (categoryProducts.length === 0) {
-    categoryProductGrid.innerHTML = '<p class="product-empty">No hay productos asignados a esta categoria.</p>';
-    return;
-  }
-
-  categoryProductGrid.innerHTML = categoryProducts.map((product) => createProductCard(product)).join("");
-  bindAddToCart(categoryProductGrid);
-}
-
-function resetCategoryForm() {
-  if (!categoryForm) {
-    return;
-  }
-
-  categoryForm.reset();
-  populateCategoryHrefOptions();
-  if (categoryIdInput) {
-    categoryIdInput.value = "";
-  }
-}
-
-function populateCategoryForm(categoryId) {
-  const category = categories.find((item) => item.id === categoryId);
-
-  if (!category || !categoryIdInput || !categoryNumberInput || !categoryTitleInput || !categoryDescriptionInput || !categoryHrefInput || !categoryTagInput) {
-    return;
-  }
-
-  populateCategoryHrefOptions();
-  categoryIdInput.value = category.id;
-  categoryNumberInput.value = category.number;
-  categoryTitleInput.value = category.title;
-  categoryDescriptionInput.value = category.description;
-  categoryHrefInput.value = category.href;
-  categoryTagInput.value = category.tag ?? "";
-}
-
-function resetProductForm() {
-  if (!productForm) {
-    return;
-  }
-
-  productForm.reset();
-
-  if (productIdInput) {
-    productIdInput.value = "";
-  }
-
-  if (productFeaturedInput) {
-    productFeaturedInput.checked = true;
-  }
-
-  populateProductCategoryOptions();
-}
-
-function populateProductForm(productId) {
-  const product = products.find((item) => item.id === productId);
-
-  if (
-    !product ||
-    !productIdInput ||
-    !productNameInput ||
-    !productCategoryLabelInput ||
-    !productCategoryHrefInput ||
-    !productPriceInput ||
-    !productDescriptionInput ||
-    !productImageSrcInput ||
-    !productImagePositionInput ||
-    !productBadgeInput ||
-    !productBadgeTypeInput ||
-    !productFeaturedInput
-  ) {
-    return;
-  }
-
-  populateProductCategoryOptions();
-  productIdInput.value = product.id;
-  productNameInput.value = product.name;
-  productCategoryLabelInput.value = product.categoryLabel;
-  productCategoryHrefInput.value = product.categoryHref;
-  productPriceInput.value = String(product.price);
-  productDescriptionInput.value = product.description;
-  productImageSrcInput.value = product.imageSrc;
-  productImagePositionInput.value = product.imagePosition || "";
-  productBadgeInput.value = product.badge || "";
-  productBadgeTypeInput.value = product.badgeType || "";
-  productFeaturedInput.checked = Boolean(product.featured);
-}
-
-function renderAdminCategories() {
-  if (!adminCategoryList) {
-    return;
-  }
-
-  if (categories.length === 0) {
-    adminCategoryList.innerHTML = '<p class="cart-empty">No hay categorias configuradas.</p>';
-    return;
-  }
-
-  adminCategoryList.innerHTML = categories
-    .map(
-      (category) => `
-        <article class="admin-item">
-          <div class="admin-item-top">
-            <div>
-              <p class="eyebrow">${category.number}</p>
-              <h3>${category.title}</h3>
-              <p class="admin-item-meta">${category.description}</p>
-            </div>
-            <div class="admin-item-actions">
-              <button class="admin-btn" type="button" data-edit-category="${category.id}">Editar</button>
-              <button class="admin-btn delete" type="button" data-delete-category="${category.id}">Eliminar</button>
-            </div>
-          </div>
-          <p class="admin-item-meta">
-            Etiqueta: ${category.tag || "Sin etiqueta"}
-          </p>
-          <a class="admin-item-link" href="${category.href}">${category.href}</a>
-        </article>
-      `
-    )
-    .join("");
-
-  adminCategoryList.querySelectorAll("[data-edit-category]").forEach((button) => {
-    button.addEventListener("click", () => {
-      populateCategoryForm(button.dataset.editCategory ?? "");
-    });
-  });
-
-  adminCategoryList.querySelectorAll("[data-delete-category]").forEach((button) => {
-    button.addEventListener("click", () => {
-      categories = categories.filter((item) => item.id !== button.dataset.deleteCategory);
-      saveCategories();
-      renderCategories();
-      renderAdminCategories();
-      resetCategoryForm();
-    });
-  });
-}
-
-function renderAdminProducts() {
-  if (!adminProductList) {
-    return;
-  }
-
-  if (products.length === 0) {
-    adminProductList.innerHTML = '<p class="cart-empty">No hay productos configurados.</p>';
-    return;
-  }
-
-  adminProductList.innerHTML = products
-    .map(
-      (product) => `
-        <article class="admin-item">
-          <div class="admin-item-top">
-            <div>
-              <p class="eyebrow">${product.categoryLabel}</p>
-              <h3>${product.name}</h3>
-              <p class="admin-item-meta">${product.description}</p>
-            </div>
-            <div class="admin-item-actions">
-              <button class="admin-btn" type="button" data-edit-product="${product.id}">Editar</button>
-              <button class="admin-btn delete" type="button" data-delete-product="${product.id}">Eliminar</button>
-            </div>
-          </div>
-          <span class="admin-item-chip">${formatCurrency(product.price)}</span>
-          <p class="admin-item-meta">Destino: ${product.categoryHref}</p>
-          <a class="admin-item-link" href="${product.imageSrc}">${product.imageSrc}</a>
-        </article>
-      `
-    )
-    .join("");
-
-  adminProductList.querySelectorAll("[data-edit-product]").forEach((button) => {
-    button.addEventListener("click", () => {
-      populateProductForm(button.dataset.editProduct ?? "");
-    });
-  });
-
-  adminProductList.querySelectorAll("[data-delete-product]").forEach((button) => {
-    button.addEventListener("click", () => {
-      products = products.filter((item) => item.id !== button.dataset.deleteProduct);
-      saveProducts();
-      renderFeaturedProducts();
-      renderCategoryPage();
-      renderAdminProducts();
-      resetProductForm();
-    });
+    button.addEventListener("click", () => removeFromCart(button.dataset.removeId ?? ""));
   });
 }
 
@@ -627,13 +219,13 @@ function renderCart() {
     quickCartTotal.textContent = formatCurrency(totalPrice);
   }
 
-  window.localStorage.setItem(storageKey, JSON.stringify(cart));
+  saveCart();
 
   if (cartItemsContainer) {
     if (cart.length === 0) {
       cartItemsContainer.innerHTML = '<p class="cart-empty">Tu carrito esta vacio.</p>';
     } else {
-      cartItemsContainer.innerHTML = cart.map((item) => getItemMarkup(item)).join("");
+      cartItemsContainer.innerHTML = cart.map((item) => getCartItemMarkup(item)).join("");
       bindCartControls(cartItemsContainer);
     }
   }
@@ -649,33 +241,17 @@ function renderCart() {
     return;
   }
 
-  quickCartBody.innerHTML = cart.slice(0, 3).map((item) => getItemMarkup(item, true)).join("");
+  quickCartBody.innerHTML = cart.slice(0, 3).map((item) => getCartItemMarkup(item, true)).join("");
   bindCartControls(quickCartBody);
 }
 
 function addToCart(product) {
-  const existingProduct = cart.find((item) => item.id === product.id);
+  const existing = cart.find((item) => item.id === product.id);
 
-  if (existingProduct) {
-    existingProduct.quantity += 1;
+  if (existing) {
+    existing.quantity += 1;
   } else {
     cart.push({ ...product, quantity: 1 });
-  }
-
-  renderCart();
-}
-
-function removeFromCart(productId) {
-  const productIndex = cart.findIndex((item) => item.id === productId);
-
-  if (productIndex === -1) {
-    return;
-  }
-
-  if (cart[productIndex].quantity > 1) {
-    cart[productIndex].quantity -= 1;
-  } else {
-    cart.splice(productIndex, 1);
   }
 
   renderCart();
@@ -697,173 +273,768 @@ function updateQuantity(productId, delta) {
   renderCart();
 }
 
+function removeFromCart(productId) {
+  cart = cart.filter((item) => item.id !== productId);
+  renderCart();
+}
+
 function clearCart() {
   cart = [];
   renderCart();
 }
 
-if (year) {
-  year.textContent = new Date().getFullYear();
+function createProductCard(product) {
+  const badgeMarkup = product.badge
+    ? `<div class="product-badge ${product.badge_type ?? ""}">${product.badge}</div>`
+    : "";
+  const backgroundStyle = [
+    "linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.68))",
+    `url("${product.image_src}")`,
+    "linear-gradient(145deg, #18271c, #070907)",
+  ].join(", ");
+
+  return `
+    <article class="product-card">
+      ${badgeMarkup}
+      <div class="product-art" style="background-image: ${backgroundStyle}; background-position: center, ${product.image_position || "center"}, center; background-size: cover, cover, cover;"></div>
+      <div class="product-info">
+        <p class="product-category">${product.category_label}</p>
+        <h3>${product.name}</h3>
+        <p>${product.description}</p>
+        <div class="product-footer">
+          <strong>${formatCurrency(Number(product.price_cop || 0))}</strong>
+          <button
+            class="add-to-cart"
+            type="button"
+            data-id="${product.id}"
+            data-name="${product.name}"
+            data-price="${product.price_cop}"
+          >
+            Agregar al carrito
+          </button>
+        </div>
+      </div>
+    </article>
+  `;
 }
 
-if (menuButton && mainNav) {
-  menuButton.addEventListener("click", () => {
-    const isOpen = mainNav.classList.toggle("is-open");
-    menuButton.setAttribute("aria-expanded", String(isOpen));
-  });
-
-  mainNav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      mainNav.classList.remove("is-open");
-      menuButton.setAttribute("aria-expanded", "false");
+function bindAddToCart(scope) {
+  scope.querySelectorAll(".add-to-cart").forEach((button) => {
+    button.addEventListener("click", () => {
+      addToCart({
+        id: button.dataset.id ?? "",
+        name: button.dataset.name ?? "Producto TREX",
+        price: Number(button.dataset.price ?? 0),
+      });
     });
   });
 }
 
-addToCartButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    addToCart({
-      id: button.dataset.id ?? "",
-      name: button.dataset.name ?? "Producto TREX",
-      price: Number(button.dataset.price ?? 0),
+function renderCategories() {
+  if (!categoryGrid) {
+    return;
+  }
+
+  if (categories.length === 0) {
+    categoryGrid.innerHTML = '<p class="cart-empty">No hay categorias publicadas.</p>';
+    return;
+  }
+
+  categoryGrid.innerHTML = categories
+    .map(
+      (category) => `
+        <a class="category-link" href="${category.href}">
+          <article class="category-card">
+            <span>${category.number_label}</span>
+            <h3>${category.title}</h3>
+            <p>${category.description}</p>
+          </article>
+        </a>
+      `
+    )
+    .join("");
+}
+
+function renderFeaturedProducts() {
+  if (!featuredProductGrid) {
+    return;
+  }
+
+  const featured = products.filter((product) => product.is_featured);
+
+  if (featured.length === 0) {
+    featuredProductGrid.innerHTML = '<p class="product-empty">No hay productos destacados publicados.</p>';
+    return;
+  }
+
+  featuredProductGrid.innerHTML = featured.map((product) => createProductCard(product)).join("");
+  bindAddToCart(featuredProductGrid);
+}
+
+function renderCategoryPage() {
+  if (!categoryProductGrid) {
+    return;
+  }
+
+  const category = categories.find((item) => item.href === currentCategoryHref);
+
+  if (!category) {
+    categoryProductGrid.innerHTML = '<p class="product-empty">No se encontro esta categoria.</p>';
+    return;
+  }
+
+  if (categoryTitle) {
+    categoryTitle.textContent = category.title;
+  }
+
+  if (categoryDescription) {
+    categoryDescription.textContent = category.description;
+  }
+
+  if (categoryTag) {
+    categoryTag.textContent = category.tag || "Categoria TREX";
+  }
+
+  if (categoryHeading) {
+    categoryHeading.textContent = `Productos disponibles en ${category.title}.`;
+  }
+
+  const filtered = products.filter((product) => product.category_id === category.id);
+
+  if (filtered.length === 0) {
+    categoryProductGrid.innerHTML = '<p class="product-empty">No hay productos publicados para esta categoria.</p>';
+    return;
+  }
+
+  categoryProductGrid.innerHTML = filtered.map((product) => createProductCard(product)).join("");
+  bindAddToCart(categoryProductGrid);
+}
+
+function populateCategoryHrefOptions() {
+  if (!categoryHrefInput) {
+    return;
+  }
+
+  categoryHrefInput.innerHTML = categoryPageOptions
+    .map((option) => `<option value="${option.value}">${option.label} (${option.value})</option>`)
+    .join("");
+}
+
+function populateProductCategoryOptions() {
+  if (!productCategoryIdInput) {
+    return;
+  }
+
+  productCategoryIdInput.innerHTML = categories
+    .map((category) => `<option value="${category.id}">${category.title}</option>`)
+    .join("");
+}
+
+function resetCategoryForm() {
+  if (!categoryForm) {
+    return;
+  }
+
+  categoryForm.reset();
+  populateCategoryHrefOptions();
+
+  if (categoryIdInput) {
+    categoryIdInput.value = "";
+  }
+}
+
+function resetProductForm() {
+  if (!productForm) {
+    return;
+  }
+
+  productForm.reset();
+  populateProductCategoryOptions();
+
+  if (productIdInput) {
+    productIdInput.value = "";
+  }
+
+  if (productFeaturedInput) {
+    productFeaturedInput.checked = true;
+  }
+}
+
+function populateCategoryForm(categoryId) {
+  const category = categories.find((item) => item.id === categoryId);
+
+  if (
+    !category ||
+    !categoryIdInput ||
+    !categoryNumberInput ||
+    !categoryTitleInput ||
+    !categoryDescriptionInput ||
+    !categoryHrefInput ||
+    !categoryTagInput
+  ) {
+    return;
+  }
+
+  populateCategoryHrefOptions();
+  categoryIdInput.value = category.id;
+  categoryNumberInput.value = category.number_label;
+  categoryTitleInput.value = category.title;
+  categoryDescriptionInput.value = category.description;
+  categoryHrefInput.value = category.href;
+  categoryTagInput.value = category.tag || "";
+}
+
+function populateProductForm(productId) {
+  const product = products.find((item) => item.id === productId);
+
+  if (
+    !product ||
+    !productIdInput ||
+    !productNameInput ||
+    !productCategoryLabelInput ||
+    !productCategoryIdInput ||
+    !productPriceInput ||
+    !productDescriptionInput ||
+    !productImageSrcInput ||
+    !productImagePositionInput ||
+    !productBadgeInput ||
+    !productBadgeTypeInput ||
+    !productFeaturedInput
+  ) {
+    return;
+  }
+
+  populateProductCategoryOptions();
+  productIdInput.value = product.id;
+  productNameInput.value = product.name;
+  productCategoryLabelInput.value = product.category_label;
+  productCategoryIdInput.value = product.category_id;
+  productPriceInput.value = String(product.price_cop);
+  productDescriptionInput.value = product.description;
+  productImageSrcInput.value = product.image_src;
+  productImagePositionInput.value = product.image_position || "";
+  productBadgeInput.value = product.badge || "";
+  productBadgeTypeInput.value = product.badge_type || "";
+  productFeaturedInput.checked = Boolean(product.is_featured);
+}
+
+function renderAdminCategories() {
+  if (!adminCategoryList) {
+    return;
+  }
+
+  if (categories.length === 0) {
+    adminCategoryList.innerHTML = '<p class="cart-empty">No hay categorias cargadas.</p>';
+    return;
+  }
+
+  adminCategoryList.innerHTML = categories
+    .map(
+      (category) => `
+        <article class="admin-item">
+          <div class="admin-item-top">
+            <div>
+              <p class="eyebrow">${category.number_label}</p>
+              <h3>${category.title}</h3>
+              <p class="admin-item-meta">${category.description}</p>
+            </div>
+            <div class="admin-item-actions">
+              <button class="admin-btn" type="button" data-edit-category="${category.id}">Editar</button>
+              <button class="admin-btn delete" type="button" data-delete-category="${category.id}">Eliminar</button>
+            </div>
+          </div>
+          <span class="admin-item-chip">${category.tag || "Categoria TREX"}</span>
+          <a class="admin-item-link" href="${category.href}">${category.href}</a>
+        </article>
+      `
+    )
+    .join("");
+
+  adminCategoryList.querySelectorAll("[data-edit-category]").forEach((button) => {
+    button.addEventListener("click", () => populateCategoryForm(button.dataset.editCategory ?? ""));
+  });
+
+  adminCategoryList.querySelectorAll("[data-delete-category]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await deleteCategory(button.dataset.deleteCategory ?? "");
     });
   });
-});
+}
 
-if (clearCartButton) {
-  clearCartButton.addEventListener("click", () => {
-    clearCart();
+function renderAdminProducts() {
+  if (!adminProductList) {
+    return;
+  }
+
+  if (products.length === 0) {
+    adminProductList.innerHTML = '<p class="cart-empty">No hay productos cargados.</p>';
+    return;
+  }
+
+  adminProductList.innerHTML = products
+    .map(
+      (product) => `
+        <article class="admin-item">
+          <div class="admin-item-top">
+            <div>
+              <p class="eyebrow">${product.category_label}</p>
+              <h3>${product.name}</h3>
+              <p class="admin-item-meta">${product.description}</p>
+            </div>
+            <div class="admin-item-actions">
+              <button class="admin-btn" type="button" data-edit-product="${product.id}">Editar</button>
+              <button class="admin-btn delete" type="button" data-delete-product="${product.id}">Eliminar</button>
+            </div>
+          </div>
+          <span class="admin-item-chip">${formatCurrency(Number(product.price_cop || 0))}</span>
+          <p class="admin-item-meta">${product.is_featured ? "Visible en destacados" : "Solo en categoria"}</p>
+          <a class="admin-item-link" href="${product.image_src}">${product.image_src}</a>
+        </article>
+      `
+    )
+    .join("");
+
+  adminProductList.querySelectorAll("[data-edit-product]").forEach((button) => {
+    button.addEventListener("click", () => populateProductForm(button.dataset.editProduct ?? ""));
+  });
+
+  adminProductList.querySelectorAll("[data-delete-product]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      await deleteProduct(button.dataset.deleteProduct ?? "");
+    });
   });
 }
 
-if (categoryForm && categoryIdInput && categoryNumberInput && categoryTitleInput && categoryDescriptionInput && categoryHrefInput && categoryTagInput) {
-  categoryForm.addEventListener("submit", (event) => {
-    event.preventDefault();
+async function fetchCategories(adminMode = false) {
+  if (!supabase) {
+    return [];
+  }
 
-    const categoryPayload = {
-      id: categoryIdInput.value || `cat-${Date.now()}`,
-      number: categoryNumberInput.value.trim(),
-      title: categoryTitleInput.value.trim(),
-      description: categoryDescriptionInput.value.trim(),
-      href: categoryHrefInput.value.trim(),
-      tag: categoryTagInput.value.trim(),
-    };
+  let query = supabase
+    .from("categories")
+    .select("id, number_label, title, description, href, tag, is_published")
+    .order("number_label", { ascending: true });
 
-    const existingIndex = categories.findIndex((item) => item.id === categoryPayload.id);
+  if (!adminMode) {
+    query = query.eq("is_published", true);
+  }
 
-    if (existingIndex >= 0) {
-      categories[existingIndex] = categoryPayload;
-    } else {
-      categories.push(categoryPayload);
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error loading categories:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+async function fetchProducts(adminMode = false) {
+  if (!supabase) {
+    return [];
+  }
+
+  let query = supabase
+    .from("products")
+    .select(
+      "id, category_id, category_label, name, description, price_cop, image_src, image_position, badge, badge_type, is_featured, is_published"
+    )
+    .order("created_at", { ascending: false });
+
+  if (!adminMode) {
+    query = query.eq("is_published", true);
+  }
+
+  const { data, error } = await query;
+
+  if (error) {
+    console.error("Error loading products:", error.message);
+    return [];
+  }
+
+  return data ?? [];
+}
+
+async function refreshContent(adminMode = false) {
+  categories = await fetchCategories(adminMode);
+  products = await fetchProducts(adminMode);
+  renderCategories();
+  renderFeaturedProducts();
+  renderCategoryPage();
+  populateCategoryHrefOptions();
+  populateProductCategoryOptions();
+  renderAdminCategories();
+  renderAdminProducts();
+}
+
+async function saveCategory() {
+  if (
+    !supabase ||
+    !currentUser ||
+    !categoryIdInput ||
+    !categoryNumberInput ||
+    !categoryTitleInput ||
+    !categoryDescriptionInput ||
+    !categoryHrefInput ||
+    !categoryTagInput
+  ) {
+    return;
+  }
+
+  const payload = {
+    number_label: categoryNumberInput.value.trim(),
+    title: categoryTitleInput.value.trim(),
+    description: categoryDescriptionInput.value.trim(),
+    href: categoryHrefInput.value,
+    tag: categoryTagInput.value.trim(),
+    is_published: true,
+    created_by: currentUser.id,
+  };
+
+  const categoryId = categoryIdInput.value.trim();
+  const query = categoryId
+    ? supabase.from("categories").update(payload).eq("id", categoryId)
+    : supabase.from("categories").insert(payload);
+
+  const { error } = await query;
+
+  if (error) {
+    setStatusMessage(authStatus, `No se pudo guardar la categoria: ${error.message}`, true);
+    return;
+  }
+
+  await refreshContent(true);
+  resetCategoryForm();
+  setStatusMessage(authStatus, "Categoria guardada correctamente.");
+}
+
+async function deleteCategory(categoryId) {
+  if (!supabase || !categoryId) {
+    return;
+  }
+
+  const { error } = await supabase.from("categories").delete().eq("id", categoryId);
+
+  if (error) {
+    setStatusMessage(authStatus, `No se pudo eliminar la categoria: ${error.message}`, true);
+    return;
+  }
+
+  await refreshContent(true);
+  resetCategoryForm();
+  setStatusMessage(authStatus, "Categoria eliminada correctamente.");
+}
+
+async function saveProduct() {
+  if (
+    !supabase ||
+    !productIdInput ||
+    !productNameInput ||
+    !productCategoryLabelInput ||
+    !productCategoryIdInput ||
+    !productPriceInput ||
+    !productDescriptionInput ||
+    !productImageSrcInput ||
+    !productImagePositionInput ||
+    !productBadgeInput ||
+    !productBadgeTypeInput ||
+    !productFeaturedInput
+  ) {
+    return;
+  }
+
+  const payload = {
+    category_id: productCategoryIdInput.value,
+    category_label: productCategoryLabelInput.value.trim(),
+    name: productNameInput.value.trim(),
+    description: productDescriptionInput.value.trim(),
+    price_cop: Number(productPriceInput.value || 0),
+    image_src: productImageSrcInput.value.trim(),
+    image_position: productImagePositionInput.value.trim() || "center",
+    badge: productBadgeInput.value.trim(),
+    badge_type: productBadgeTypeInput.value,
+    is_featured: productFeaturedInput.checked,
+    is_published: true,
+    created_by: currentUser?.id ?? null,
+  };
+
+  const productId = productIdInput.value.trim();
+  const query = productId
+    ? supabase.from("products").update(payload).eq("id", productId)
+    : supabase.from("products").insert(payload);
+
+  const { error } = await query;
+
+  if (error) {
+    setStatusMessage(authStatus, `No se pudo guardar el producto: ${error.message}`, true);
+    return;
+  }
+
+  await refreshContent(true);
+  resetProductForm();
+  setStatusMessage(authStatus, "Producto guardado correctamente.");
+}
+
+async function deleteProduct(productId) {
+  if (!supabase || !productId) {
+    return;
+  }
+
+  const { error } = await supabase.from("products").delete().eq("id", productId);
+
+  if (error) {
+    setStatusMessage(authStatus, `No se pudo eliminar el producto: ${error.message}`, true);
+    return;
+  }
+
+  await refreshContent(true);
+  resetProductForm();
+  setStatusMessage(authStatus, "Producto eliminado correctamente.");
+}
+
+async function verifyAdminSession() {
+  if (!supabase) {
+    setStatusMessage(authStatus, "Falta configurar Supabase en app-config.js", true);
+    return false;
+  }
+
+  const { data: userData, error: userError } = await supabase.auth.getUser();
+
+  if (userError) {
+    window.location.replace("login.html");
+    return false;
+  }
+
+  currentUser = userData.user ?? null;
+
+  if (!currentUser) {
+    window.location.replace("login.html");
+    return false;
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("id, email, role")
+    .eq("id", currentUser.id)
+    .single();
+
+  if (profileError || profile?.role !== "admin") {
+    await supabase.auth.signOut();
+    window.location.replace("login.html?error=not_admin");
+    return false;
+  }
+
+  currentProfile = profile;
+
+  if (adminApp) {
+    adminApp.hidden = false;
+  }
+
+  if (authMessage) {
+    authMessage.hidden = true;
+  }
+
+  return true;
+}
+
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+
+  if (!supabase || !loginEmailInput || !loginPasswordInput) {
+    setStatusMessage(loginStatus, "Falta configurar Supabase en app-config.js", true);
+    return;
+  }
+
+  setStatusMessage(loginStatus, "Validando credenciales...");
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email: loginEmailInput.value.trim(),
+    password: loginPasswordInput.value,
+  });
+
+  if (error) {
+    setStatusMessage(loginStatus, error.message, true);
+    return;
+  }
+
+  const { data: userData } = await supabase.auth.getUser();
+
+  if (!userData.user) {
+    setStatusMessage(loginStatus, "No se pudo validar la sesion con Supabase.", true);
+    return;
+  }
+
+  const { data: profile, error: profileError } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userData.user.id)
+    .single();
+
+  if (profileError || profile?.role !== "admin") {
+    await supabase.auth.signOut();
+    setStatusMessage(loginStatus, "Tu usuario existe, pero no tiene rol admin.", true);
+    return;
+  }
+
+  window.location.replace("admin.html");
+}
+
+async function handleLogout() {
+  if (!supabase) {
+    return;
+  }
+
+  await supabase.auth.signOut();
+  window.location.replace("login.html");
+}
+
+function handleCheckout() {
+  if (cart.length === 0) {
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const lines = [
+    "Hola TREX, quiero finalizar este pedido:",
+    "",
+    ...cart.map(
+      (item, index) =>
+        `${index + 1}. ${item.name} x${item.quantity} - ${formatCurrency(item.price * item.quantity)}`
+    ),
+    "",
+    `Total: ${formatCurrency(total)}`,
+  ];
+
+  const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(lines.join("\n"))}`;
+  window.location.href = url;
+}
+
+function initializeBaseUi() {
+  if (year) {
+    year.textContent = new Date().getFullYear();
+  }
+
+  if (menuButton && mainNav) {
+    menuButton.addEventListener("click", () => {
+      const isOpen = mainNav.classList.toggle("is-open");
+      menuButton.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    mainNav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        mainNav.classList.remove("is-open");
+        menuButton.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  if (clearCartButton) {
+    clearCartButton.addEventListener("click", () => clearCart());
+  }
+
+  checkoutButtons.forEach((button) => {
+    button.addEventListener("click", handleCheckout);
+  });
+
+  if (loginForm) {
+    loginForm.addEventListener("submit", handleLoginSubmit);
+  }
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", handleLogout);
+  }
+
+  if (categoryForm) {
+    categoryForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await saveCategory();
+    });
+  }
+
+  if (categoryCancelButton) {
+    categoryCancelButton.addEventListener("click", () => resetCategoryForm());
+  }
+
+  if (resetCategoriesButton) {
+    resetCategoriesButton.addEventListener("click", async () => {
+      if (!supabase) {
+        return;
+      }
+
+      const { error } = await supabase
+        .from("categories")
+        .upsert(categoryPageOptions.map((option, index) => ({
+          number_label: String(index + 1).padStart(2, "0"),
+          title: option.label,
+          description: categories.find((item) => item.href === option.value)?.description || "",
+          href: option.value,
+          tag: "Categoria TREX",
+          is_published: true,
+          created_by: currentUser?.id ?? null,
+        })), { onConflict: "href" });
+
+      if (error) {
+        setStatusMessage(authStatus, `No se pudieron restaurar categorias: ${error.message}`, true);
+        return;
+      }
+
+      await refreshContent(true);
+      resetCategoryForm();
+      setStatusMessage(authStatus, "Categorias restauradas.");
+    });
+  }
+
+  if (productForm) {
+    productForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      await saveProduct();
+    });
+  }
+
+  if (productCancelButton) {
+    productCancelButton.addEventListener("click", () => resetProductForm());
+  }
+}
+
+async function bootstrap() {
+  initializeBaseUi();
+  renderCart();
+
+  if (!hasSupabaseConfig) {
+    setStatusMessage(authStatus, "Configura Supabase en app-config.js para habilitar login y admin.", true);
+    setStatusMessage(loginStatus, "Configura Supabase en app-config.js para iniciar sesion.", true);
+    return;
+  }
+
+  if (pageType === "login") {
+    const { data } = await supabase.auth.getUser();
+    if (data.user) {
+      const { data: profile } = await supabase.from("profiles").select("role").eq("id", data.user.id).single();
+      if (profile?.role === "admin") {
+        window.location.replace("admin.html");
+        return;
+      }
     }
+  }
 
-    saveCategories();
-    renderCategories();
-    renderCategoryPage();
-    populateProductCategoryOptions();
-    renderAdminCategories();
-    resetCategoryForm();
-  });
-}
-
-if (categoryCancelButton) {
-  categoryCancelButton.addEventListener("click", () => {
-    resetCategoryForm();
-  });
-}
-
-if (resetCategoriesButton) {
-  resetCategoriesButton.addEventListener("click", () => {
-    categories = [...defaultCategories];
-    saveCategories();
-    renderCategories();
-    renderCategoryPage();
-    populateProductCategoryOptions();
-    renderAdminCategories();
-    resetCategoryForm();
-  });
-}
-
-if (
-  productForm &&
-  productIdInput &&
-  productNameInput &&
-  productCategoryLabelInput &&
-  productCategoryHrefInput &&
-  productPriceInput &&
-  productDescriptionInput &&
-  productImageSrcInput &&
-  productImagePositionInput &&
-  productBadgeInput &&
-  productBadgeTypeInput &&
-  productFeaturedInput
-) {
-  productForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const productPayload = {
-      id: productIdInput.value || `prod-${Date.now()}`,
-      name: productNameInput.value.trim(),
-      categoryLabel: productCategoryLabelInput.value.trim(),
-      categoryHref: productCategoryHrefInput.value.trim(),
-      price: Number(productPriceInput.value || 0),
-      description: productDescriptionInput.value.trim(),
-      imageSrc: productImageSrcInput.value.trim(),
-      imagePosition: productImagePositionInput.value.trim() || "center",
-      badge: productBadgeInput.value.trim(),
-      badgeType: productBadgeTypeInput.value,
-      featured: productFeaturedInput.checked,
-    };
-
-    const existingIndex = products.findIndex((item) => item.id === productPayload.id);
-
-    if (existingIndex >= 0) {
-      products[existingIndex] = productPayload;
-    } else {
-      products.push(productPayload);
-    }
-
-    saveProducts();
-    renderFeaturedProducts();
-    renderCategoryPage();
-    renderAdminProducts();
-    resetProductForm();
-  });
-}
-
-if (productCancelButton) {
-  productCancelButton.addEventListener("click", () => {
-    resetProductForm();
-  });
-}
-
-checkoutButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    if (cart.length === 0) {
+  if (pageType === "admin") {
+    const accessGranted = await verifyAdminSession();
+    if (!accessGranted) {
       return;
     }
 
-    const messageLines = [
-      "Hola TREX, quiero finalizar este pedido:",
-      "",
-      ...cart.map(
-        (item, index) =>
-          `${index + 1}. ${item.name} x${item.quantity} - ${formatCurrency(item.price * item.quantity)}`
-      ),
-      "",
-      `Total: ${formatCurrency(cart.reduce((sum, item) => sum + item.price * item.quantity, 0))}`,
-    ];
+    await refreshContent(true);
+  } else if (pageType !== "login") {
+    await refreshContent(false);
+  }
 
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(messageLines.join("\n"))}`;
-    window.open(whatsappUrl, "_blank", "noopener");
+  supabase.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_OUT" && pageType === "admin") {
+      setTimeout(() => {
+        window.location.replace("login.html");
+      }, 0);
+    }
   });
-});
+}
 
-populateCategoryHrefOptions();
-renderCategories();
-populateProductCategoryOptions();
-renderAdminCategories();
-renderFeaturedProducts();
-renderCategoryPage();
-renderAdminProducts();
-renderCart();
+bootstrap();

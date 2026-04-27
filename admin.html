@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body data-page="admin">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -41,6 +41,10 @@
 
         <a class="cta-chip" href="index.html">Ver sitio</a>
 
+        <button class="cart-trigger" id="logout-button" type="button" aria-label="Cerrar sesion">
+          <span>Cerrar sesion</span>
+        </button>
+
         <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
           <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
           <span>Carrito</span>
@@ -48,7 +52,7 @@
         </a>
       </header>
 
-      <main class="admin-page">
+      <main class="admin-page" id="admin-app" hidden>
         <section class="admin-hero">
           <div>
             <p class="eyebrow">CRUD Categorias</p>
@@ -197,8 +201,17 @@
           </section>
         </section>
       </main>
+
+      <section class="admin-card auth-message" id="auth-message">
+        <p class="eyebrow">Proteccion admin</p>
+        <h2>Validando acceso...</h2>
+        <p class="hero-text" id="auth-status">
+          Estamos comprobando tu sesion segura con Supabase.
+        </p>
+      </section>
     </div>
 
-    <script src="script.js"></script>
+    <script src="app-config.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
