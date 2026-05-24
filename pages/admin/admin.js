@@ -211,12 +211,20 @@ initBaseUi({ quickCart: false });
 if (!hasSupabaseConfig) {
   setStatusMessage(authStatus, "Configura Supabase en shared/js/app-config.js para habilitar login y admin.", true);
 } else {
-  const session = await verifyAdminSession();
-  if (session) {
-    currentUser = session.user;
-    if (adminApp) adminApp.hidden = false;
-    if (authMessage) authMessage.hidden = true;
-    bindAdminEvents();
-    await runAdminAction(refreshAdmin);
+  try {
+    setStatusMessage(authStatus, "Validando sesion admin con Supabase...");
+    const session = await verifyAdminSession();
+
+    if (session) {
+      currentUser = session.user;
+      if (adminApp) adminApp.hidden = false;
+      if (authMessage) authMessage.hidden = true;
+      document.querySelectorAll("#admin-app .reveal").forEach((element) => element.classList.add("is-visible"));
+      bindAdminEvents();
+      await runAdminAction(refreshAdmin);
+    }
+  } catch (error) {
+    if (authMessage) authMessage.hidden = false;
+    setStatusMessage(authStatus, `No se pudo validar el acceso admin: ${error.message}`, true);
   }
 }

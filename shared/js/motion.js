@@ -8,8 +8,6 @@ const revealSelector = [
   ".product-card",
   ".catalog-highlight",
   ".benefit-grid article",
-  ".cart-card",
-  ".admin-card",
   ".footer",
 ].join(",");
 
