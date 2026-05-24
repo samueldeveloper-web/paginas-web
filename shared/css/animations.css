@@ -6,7 +6,7 @@
   }
 
   50% {
-    box-shadow: 0 0 34px rgba(204, 255, 0, 0.22);
+    box-shadow: 0 0 42px rgba(204, 255, 0, 0.22);
   }
 }
 
@@ -22,16 +22,16 @@
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(28px);
+  opacity: 0.001;
+  transform: translate3d(0, 26px, 0);
   transition:
-    opacity 0.8s var(--ease),
-    transform 0.8s var(--ease);
+    opacity 0.75s var(--ease),
+    transform 0.75s var(--ease);
 }
 
 .reveal.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
 }
 
 @media (prefers-reduced-motion: reduce) {

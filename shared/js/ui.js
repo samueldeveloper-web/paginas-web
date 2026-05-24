@@ -127,7 +127,7 @@ export const renderCategoryGrid = (categories = []) => {
     ? categories
         .map(
           ({ title, description, slug }) => `
-            <a class="category-link" href="${getCategoryUrl(slug)}">
+            <a class="category-link" href="${getCategoryUrl(slug)}" data-category-slug="${escapeHtml(slug)}">
               <article class="category-card">
                 <h3>${escapeHtml(title)}</h3>
                 <p>${escapeHtml(description)}</p>
