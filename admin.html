@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Categorias | TREX</title>
+    <title>Admin Catalogo | TREX</title>
     <meta
       name="description"
-      content="Panel admin CRUD para crear, editar y eliminar categorias de TREX."
+      content="Panel admin seguro para administrar categorias y productos de TREX."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,7 +20,7 @@
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
-          <img class="brand-logo" src="logotrex.jpeg" alt="Logo TREX" />
+          <img class="brand-logo" src="img/branding/logotrex.jpeg" alt="Logo TREX" />
           <div>
             <p class="eyebrow">Panel de control</p>
             <a class="brand-name" href="index.html">TREX Admin</a>
@@ -46,7 +46,7 @@
         </button>
 
         <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
-          <img class="cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+          <img class="cart-icon" src="img/ui/cart-icon.svg" alt="" aria-hidden="true" />
           <span>Carrito</span>
           <span class="cart-count" id="cart-count">0</span>
         </a>
@@ -55,11 +55,11 @@
       <main class="admin-page" id="admin-app" hidden>
         <section class="admin-hero">
           <div>
-            <p class="eyebrow">CRUD Categorias</p>
-            <h1>Administra las categorias de la portada.</h1>
+            <p class="eyebrow">Catalogo dinamico</p>
+            <h1>Administra categorias y productos desde Supabase.</h1>
             <p class="hero-text">
-              Desde aqui puedes crear, editar y eliminar categorias. Los cambios
-              se guardan en el navegador y se reflejan en la web principal.
+              Desde aqui puedes crear, editar y eliminar categorias y productos.
+              Los cambios se guardan en Supabase y se reflejan en la web principal.
             </p>
           </div>
           <button class="btn btn-secondary" id="reset-categories" type="button">Restaurar categorias base</button>
@@ -76,11 +76,6 @@
               <input type="hidden" id="category-id" />
 
               <label class="admin-field">
-                <span>Numero</span>
-                <input id="category-number" type="text" placeholder="01" required />
-              </label>
-
-              <label class="admin-field">
                 <span>Titulo</span>
                 <input id="category-title" type="text" placeholder="Armas traumaticas" required />
               </label>
@@ -91,8 +86,8 @@
               </label>
 
               <label class="admin-field">
-                <span>Enlace</span>
-                <select id="category-href" required></select>
+                <span>Slug</span>
+                <input id="category-slug" type="text" placeholder="armas-traumaticas" required />
               </label>
 
               <label class="admin-field">
@@ -135,13 +130,8 @@
               </label>
 
               <label class="admin-field">
-                <span>Categoria visible</span>
-                <input id="product-category-label" type="text" placeholder="Airsoft" required />
-              </label>
-
-              <label class="admin-field">
                 <span>Categoria destino</span>
-                <select id="product-category-href" required></select>
+                <select id="product-category-id" required></select>
               </label>
 
               <label class="admin-field">
@@ -155,14 +145,26 @@
               </label>
 
               <label class="admin-field">
-                <span>Imagen</span>
-                <input id="product-image-src" type="text" placeholder="ASGCZP-09.jpeg" required />
+                <span>Ruta de imagen</span>
+                <input
+                  id="product-image-src"
+                  type="text"
+                  placeholder="Se completa al subir la imagen"
+                  required
+                  readonly
+                />
               </label>
 
               <label class="admin-field">
-                <span>Posicion imagen</span>
-                <input id="product-image-position" type="text" placeholder="center 38%" />
+                <span>Archivo de imagen</span>
+                <input id="product-image-file" type="file" accept="image/png,image/jpeg,image/webp" />
               </label>
+
+              <div class="admin-actions">
+                <button class="btn btn-secondary" type="button" id="upload-image-button">Agregar imagen</button>
+              </div>
+
+              <p class="admin-status" id="product-image-status"></p>
 
               <label class="admin-field">
                 <span>Badge</span>

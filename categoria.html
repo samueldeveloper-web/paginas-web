@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accesorios | TREX</title>
+    <title>Categoria | TREX</title>
     <meta
       name="description"
-      content="Categoria TREX de accesorios con visual comercial y acceso al carrito."
+      content="Pagina dinamica de categoria TREX cargada desde Supabase."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +16,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-page="public" data-category-href="accesorios.html">
+  <body data-page="public" data-page-kind="category">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
@@ -53,19 +53,26 @@
         <section class="cart-hero">
           <div>
             <p class="eyebrow" id="category-tag">Categoria TREX</p>
-            <h1 id="category-title">Accesorios</h1>
+            <h1 id="category-title">Categoria TREX</h1>
             <p class="hero-text" id="category-description">
-              Miras, estuches, protecciones y complementos para una tienda
-              deportiva con navegacion clara y visual potente.
+              Cargando informacion de la categoria...
             </p>
           </div>
           <a class="btn btn-secondary" href="index.html#categorias">Ver mas categorias</a>
         </section>
 
+        <section class="subcategory-strip" id="subcategory-section" hidden>
+          <div class="section-heading">
+            <p class="eyebrow">Division interna</p>
+            <h2 id="subcategory-heading">Lineas disponibles en esta categoria.</h2>
+          </div>
+          <div class="subcategory-grid" id="subcategory-grid"></div>
+        </section>
+
         <section class="featured-products">
           <div class="section-heading">
             <p class="eyebrow">Seleccion</p>
-            <h2 id="category-heading">Todo lo que completa la experiencia TREX.</h2>
+            <h2 id="category-heading">Productos de esta categoria.</h2>
           </div>
           <div class="product-grid" id="category-product-grid"></div>
         </section>

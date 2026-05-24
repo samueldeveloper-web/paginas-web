@@ -1,7 +1,17 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const pageType = document.body.dataset.page ?? "public";
-const currentCategoryHref = document.body.dataset.categoryHref ?? "";
+const legacyCategoryHref = document.body.dataset.categoryHref ?? "";
+const legacyCategorySlugMap = {
+  "traumaticas.html": "armas-traumaticas",
+  "aire-comprimido.html": "aire-comprimido",
+  "airsoft.html": "airsoft-tactico",
+  "accesorios.html": "accesorios",
+};
+const currentCategorySlug =
+  new URLSearchParams(window.location.search).get("slug") ??
+  legacyCategorySlugMap[legacyCategoryHref] ??
+  "";
 
 const menuButton = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
@@ -14,6 +24,9 @@ const categoryTitle = document.querySelector("#category-title");
 const categoryDescription = document.querySelector("#category-description");
 const categoryTag = document.querySelector("#category-tag");
 const categoryHeading = document.querySelector("#category-heading");
+const subcategorySection = document.querySelector("#subcategory-section");
+const subcategoryHeading = document.querySelector("#subcategory-heading");
+const subcategoryGrid = document.querySelector("#subcategory-grid");
 
 const cartItemsContainer = document.querySelector("#cart-items");
 const cartTotal = document.querySelector("#cart-total");
@@ -24,10 +37,9 @@ const checkoutButtons = document.querySelectorAll(".cart-checkout");
 
 const categoryForm = document.querySelector("#category-form");
 const categoryIdInput = document.querySelector("#category-id");
-const categoryNumberInput = document.querySelector("#category-number");
 const categoryTitleInput = document.querySelector("#category-title");
 const categoryDescriptionInput = document.querySelector("#category-description");
-const categoryHrefInput = document.querySelector("#category-href");
+const categorySlugInput = document.querySelector("#category-slug");
 const categoryTagInput = document.querySelector("#category-tag");
 const categoryCancelButton = document.querySelector("#category-cancel");
 const resetCategoriesButton = document.querySelector("#reset-categories");
@@ -36,12 +48,13 @@ const adminCategoryList = document.querySelector("#admin-category-list");
 const productForm = document.querySelector("#product-form");
 const productIdInput = document.querySelector("#product-id");
 const productNameInput = document.querySelector("#product-name");
-const productCategoryLabelInput = document.querySelector("#product-category-label");
-const productCategoryIdInput = document.querySelector("#product-category-href");
+const productCategoryIdInput = document.querySelector("#product-category-id");
 const productPriceInput = document.querySelector("#product-price");
 const productDescriptionInput = document.querySelector("#product-description");
 const productImageSrcInput = document.querySelector("#product-image-src");
-const productImagePositionInput = document.querySelector("#product-image-position");
+const productImageFileInput = document.querySelector("#product-image-file");
+const uploadImageButton = document.querySelector("#upload-image-button");
+const productImageStatus = document.querySelector("#product-image-status");
 const productBadgeInput = document.querySelector("#product-badge");
 const productBadgeTypeInput = document.querySelector("#product-badge-type");
 const productFeaturedInput = document.querySelector("#product-featured");
@@ -60,20 +73,65 @@ const authStatus = document.querySelector("#auth-status");
 
 const cartStorageKey = "trex-cart";
 const whatsappNumber = "573116455682";
-const categoryPageOptions = [
-  { value: "traumaticas.html", label: "Armas traumaticas" },
-  { value: "aire-comprimido.html", label: "Aire comprimido" },
-  { value: "airsoft.html", label: "Airsoft tactico" },
-  { value: "accesorios.html", label: "Accesorios" },
+const defaultDynamicCategories = [
+  {
+    number_label: "01",
+    title: "Armas traumaticas",
+    description: "Pistolas, revolveres y accesorios con presencia visual fuerte.",
+    slug: "armas-traumaticas",
+    tag: "Categoria TREX",
+  },
+  {
+    number_label: "02",
+    title: "Aire comprimido",
+    description: "Rifles, pistolas y municiones para tiro deportivo y practica.",
+    slug: "aire-comprimido",
+    tag: "Categoria TREX",
+  },
+  {
+    number_label: "03",
+    title: "Airsoft tactico",
+    description: "Replicas, BBs, chalecos, cascos y plataformas de juego.",
+    slug: "airsoft-tactico",
+    tag: "Categoria TREX",
+  },
+  {
+    number_label: "04",
+    title: "Accesorios",
+    description: "Miras, linternas, estuches, protectores y repuestos.",
+    slug: "accesorios",
+    tag: "Categoria TREX",
+  },
 ];
+const categoryDivisions = {
+  "armas-traumaticas": {
+    heading: "Explora la linea traumatica por tipo de arma.",
+    items: [
+      {
+        title: "Pistolas",
+        description: "Modelos compactos y de respuesta rapida para vitrina comercial y uso deportivo.",
+      },
+      {
+        title: "Escopetas",
+        description: "Plataformas largas con silueta dominante para una linea mas robusta y tactica.",
+      },
+      {
+        title: "Revolveres",
+        description: "Piezas clasicas de alto impacto visual, ideales para coleccion y exhibicion premium.",
+      },
+    ],
+  },
+};
 
 const config = window.TREX_CONFIG ?? {};
 const hasSupabaseConfig = Boolean(config.supabaseUrl && config.supabaseAnonKey);
+const storageBucket = config.storageBucket || "trex-product-images";
 const supabase = hasSupabaseConfig
   ? createClient(config.supabaseUrl, config.supabaseAnonKey, {
       auth: {
         autoRefreshToken: true,
         persistSession: true,
+        storage: window.sessionStorage,
         detectSessionInUrl: true,
       },
     })
@@ -115,6 +173,18 @@ function formatCurrency(value) {
   }).format(value);
 }
 
+function normalizeSlug(value) {
+  return value
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
 function setStatusMessage(element, message, isError = false) {
   if (!element) {
     return;
@@ -122,6 +192,47 @@ function setStatusMessage(element, message, isError = false) {
 
   element.textContent = message;
   element.classList.toggle("is-error", isError);
+}
+
+function sanitizeFilename(value) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9.-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function normalizeImageSrc(value) {
+  const imageSrc = (value || "").trim();
+
+  if (!imageSrc) {
+    return "";
+  }
+
+  if (/^https?:\/\//i.test(imageSrc) || imageSrc.startsWith("data:")) {
+    return imageSrc;
+  }
+
+  const legacyImageMap = {
+    "ASGCZP-09.jpeg": "img/productos/traumaticas/ASGCZP-09.jpeg",
+    "img/ASGCZP-09.jpeg": "img/productos/traumaticas/ASGCZP-09.jpeg",
+    "ASGDAN.jpeg": "img/productos/traumaticas/ASGDAN.jpeg",
+    "img/ASGDAN.jpeg": "img/productos/traumaticas/ASGDAN.jpeg",
+    "waltherp38.jpeg": "img/productos/airsoft/waltherp38.jpeg",
+    "img/waltherp38.jpeg": "img/productos/airsoft/waltherp38.jpeg",
+  };
+
+  return legacyImageMap[imageSrc] || imageSrc;
+}
+
+function getNextCategoryNumber() {
+  const numbers = categories
+    .map((category) => Number.parseInt(category.number_label || "0", 10))
+    .filter((value) => Number.isFinite(value) && value > 0);
+  const nextValue = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
+  return String(nextValue).padStart(2, "0");
 }
 
 function ensureQuickCart() {
@@ -135,7 +246,7 @@ function ensureQuickCart() {
   widget.innerHTML = `
     <div class="quick-cart-header">
       <div class="quick-cart-title">
-        <img class="quick-cart-icon" src="cart-icon.svg" alt="" aria-hidden="true" />
+        <img class="quick-cart-icon" src="img/ui/cart-icon.svg" alt="" aria-hidden="true" />
         <div>
           <p class="eyebrow">Resumen rapido</p>
           <h3>Carrito</h3>
@@ -287,16 +398,25 @@ function createProductCard(product) {
   const badgeMarkup = product.badge
     ? `<div class="product-badge ${product.badge_type ?? ""}">${product.badge}</div>`
     : "";
-  const backgroundStyle = [
-    "linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.68))",
-    `url("${product.image_src}")`,
-    "linear-gradient(145deg, #18271c, #070907)",
-  ].join(", ");
+  const imageMarkup = product.image_src
+    ? `
+        <img
+          class="product-art-image"
+          src="${normalizeImageSrc(product.image_src)}"
+          alt="${product.name}"
+          loading="lazy"
+          onerror="this.hidden=true; this.nextElementSibling.hidden=false;"
+        />
+        <div class="product-art-fallback" hidden>Imagen pendiente</div>
+      `
+    : '<div class="product-art-fallback">Imagen pendiente</div>';
 
   return `
     <article class="product-card">
       ${badgeMarkup}
-      <div class="product-art" style="background-image: ${backgroundStyle}; background-position: center, ${product.image_position || "center"}, center; background-size: cover, cover, cover;"></div>
+      <div class="product-art">
+        ${imageMarkup}
+      </div>
       <div class="product-info">
         <p class="product-category">${product.category_label}</p>
         <h3>${product.name}</h3>
@@ -343,9 +463,8 @@ function renderCategories() {
   categoryGrid.innerHTML = categories
     .map(
       (category) => `
-        <a class="category-link" href="${category.href}">
+        <a class="category-link" href="categoria.html?slug=${encodeURIComponent(category.slug)}">
           <article class="category-card">
-            <span>${category.number_label}</span>
             <h3>${category.title}</h3>
             <p>${category.description}</p>
           </article>
@@ -371,12 +490,44 @@ function renderFeaturedProducts() {
   bindAddToCart(featuredProductGrid);
 }
 
+function renderCategoryDivisions(category) {
+  if (!subcategorySection || !subcategoryGrid) {
+    return;
+  }
+
+  const division = categoryDivisions[category.slug];
+
+  if (!division) {
+    subcategorySection.hidden = true;
+    subcategoryGrid.innerHTML = "";
+    return;
+  }
+
+  subcategorySection.hidden = false;
+
+  if (subcategoryHeading) {
+    subcategoryHeading.textContent = division.heading;
+  }
+
+  subcategoryGrid.innerHTML = division.items
+    .map(
+      (item) => `
+        <article class="subcategory-card">
+          <p class="eyebrow">Linea TREX</p>
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
 function renderCategoryPage() {
   if (!categoryProductGrid) {
     return;
   }
 
-  const category = categories.find((item) => item.href === currentCategoryHref);
+  const category = categories.find((item) => item.slug === currentCategorySlug);
 
   if (!category) {
     categoryProductGrid.innerHTML = '<p class="product-empty">No se encontro esta categoria.</p>';
@@ -399,6 +550,8 @@ function renderCategoryPage() {
     categoryHeading.textContent = `Productos disponibles en ${category.title}.`;
   }
 
+  renderCategoryDivisions(category);
+
   const filtered = products.filter((product) => product.category_id === category.id);
 
   if (filtered.length === 0) {
@@ -408,16 +561,6 @@ function renderCategoryPage() {
 
   categoryProductGrid.innerHTML = filtered.map((product) => createProductCard(product)).join("");
   bindAddToCart(categoryProductGrid);
-}
-
-function populateCategoryHrefOptions() {
-  if (!categoryHrefInput) {
-    return;
-  }
-
-  categoryHrefInput.innerHTML = categoryPageOptions
-    .map((option) => `<option value="${option.value}">${option.label} (${option.value})</option>`)
-    .join("");
 }
 
 function populateProductCategoryOptions() {
@@ -436,7 +579,6 @@ function resetCategoryForm() {
   }
 
   categoryForm.reset();
-  populateCategoryHrefOptions();
 
   if (categoryIdInput) {
     categoryIdInput.value = "";
@@ -455,6 +597,16 @@ function resetProductForm() {
     productIdInput.value = "";
   }
 
+  if (productImageSrcInput) {
+    productImageSrcInput.value = "";
+  }
+
+  if (productImageFileInput) {
+    productImageFileInput.value = "";
+  }
+
+  setStatusMessage(productImageStatus, "");
+
   if (productFeaturedInput) {
     productFeaturedInput.checked = true;
   }
@@ -466,21 +618,18 @@ function populateCategoryForm(categoryId) {
   if (
     !category ||
     !categoryIdInput ||
-    !categoryNumberInput ||
     !categoryTitleInput ||
     !categoryDescriptionInput ||
-    !categoryHrefInput ||
+    !categorySlugInput ||
     !categoryTagInput
   ) {
     return;
   }
 
-  populateCategoryHrefOptions();
   categoryIdInput.value = category.id;
-  categoryNumberInput.value = category.number_label;
   categoryTitleInput.value = category.title;
   categoryDescriptionInput.value = category.description;
-  categoryHrefInput.value = category.href;
+  categorySlugInput.value = category.slug;
   categoryTagInput.value = category.tag || "";
 }
 
@@ -491,12 +640,10 @@ function populateProductForm(productId) {
     !product ||
     !productIdInput ||
     !productNameInput ||
-    !productCategoryLabelInput ||
     !productCategoryIdInput ||
     !productPriceInput ||
     !productDescriptionInput ||
     !productImageSrcInput ||
-    !productImagePositionInput ||
     !productBadgeInput ||
     !productBadgeTypeInput ||
     !productFeaturedInput
@@ -507,15 +654,14 @@ function populateProductForm(productId) {
   populateProductCategoryOptions();
   productIdInput.value = product.id;
   productNameInput.value = product.name;
-  productCategoryLabelInput.value = product.category_label;
   productCategoryIdInput.value = product.category_id;
   productPriceInput.value = String(product.price_cop);
   productDescriptionInput.value = product.description;
   productImageSrcInput.value = product.image_src;
-  productImagePositionInput.value = product.image_position || "";
   productBadgeInput.value = product.badge || "";
   productBadgeTypeInput.value = product.badge_type || "";
   productFeaturedInput.checked = Boolean(product.is_featured);
+  setStatusMessage(productImageStatus, "Imagen lista. Puedes reemplazarla subiendo otro archivo.");
 }
 
 function renderAdminCategories() {
@@ -534,7 +680,6 @@ function renderAdminCategories() {
         <article class="admin-item">
           <div class="admin-item-top">
             <div>
-              <p class="eyebrow">${category.number_label}</p>
               <h3>${category.title}</h3>
               <p class="admin-item-meta">${category.description}</p>
             </div>
@@ -544,7 +689,7 @@ function renderAdminCategories() {
             </div>
           </div>
           <span class="admin-item-chip">${category.tag || "Categoria TREX"}</span>
-          <a class="admin-item-link" href="${category.href}">${category.href}</a>
+          <a class="admin-item-link" href="categoria.html?slug=${encodeURIComponent(category.slug)}">${category.slug}</a>
         </article>
       `
     )
@@ -612,7 +757,7 @@ async function fetchCategories(adminMode = false) {
 
   let query = supabase
     .from("categories")
-    .select("id, number_label, title, description, href, tag, is_published")
+    .select("id, number_label, title, description, href, slug, tag, is_published")
     .order("number_label", { ascending: true });
 
   if (!adminMode) {
@@ -626,7 +771,10 @@ async function fetchCategories(adminMode = false) {
     return [];
   }
 
-  return data ?? [];
+  return (data ?? []).map((category) => ({
+    ...category,
+    slug: category.slug || decodeURIComponent(category.href?.split("slug=")[1] || ""),
+  }));
 }
 
 async function fetchProducts(adminMode = false) {
@@ -652,7 +800,10 @@ async function fetchProducts(adminMode = false) {
     return [];
   }
 
-  return data ?? [];
+  return (data ?? []).map((product) => ({
+    ...product,
+    image_src: normalizeImageSrc(product.image_src),
+  }));
 }
 
 async function refreshContent(adminMode = false) {
@@ -661,7 +812,6 @@ async function refreshContent(adminMode = false) {
   renderCategories();
   renderFeaturedProducts();
   renderCategoryPage();
-  populateCategoryHrefOptions();
   populateProductCategoryOptions();
   renderAdminCategories();
   renderAdminProducts();
@@ -672,26 +822,35 @@ async function saveCategory() {
     !supabase ||
     !currentUser ||
     !categoryIdInput ||
-    !categoryNumberInput ||
     !categoryTitleInput ||
     !categoryDescriptionInput ||
-    !categoryHrefInput ||
+    !categorySlugInput ||
     !categoryTagInput
   ) {
     return;
   }
 
+  const normalizedSlug = normalizeSlug(categorySlugInput.value);
+  const categoryId = categoryIdInput.value.trim();
+  const existingCategory = categories.find((category) => category.id === categoryId);
+
+  if (!normalizedSlug) {
+    setStatusMessage(authStatus, "Debes ingresar un slug valido para la categoria.", true);
+    return;
+  }
+
+  categorySlugInput.value = normalizedSlug;
   const payload = {
-    number_label: categoryNumberInput.value.trim(),
+    number_label: existingCategory?.number_label || getNextCategoryNumber(),
     title: categoryTitleInput.value.trim(),
     description: categoryDescriptionInput.value.trim(),
-    href: categoryHrefInput.value,
+    slug: normalizedSlug,
+    href: `categoria.html?slug=${encodeURIComponent(normalizedSlug)}`,
     tag: categoryTagInput.value.trim(),
     is_published: true,
     created_by: currentUser.id,
   };
 
-  const categoryId = categoryIdInput.value.trim();
   const query = categoryId
     ? supabase.from("categories").update(payload).eq("id", categoryId)
     : supabase.from("categories").insert(payload);
@@ -730,12 +889,10 @@ async function saveProduct() {
     !supabase ||
     !productIdInput ||
     !productNameInput ||
-    !productCategoryLabelInput ||
     !productCategoryIdInput ||
     !productPriceInput ||
     !productDescriptionInput ||
     !productImageSrcInput ||
-    !productImagePositionInput ||
     !productBadgeInput ||
     !productBadgeTypeInput ||
     !productFeaturedInput
@@ -743,14 +900,21 @@ async function saveProduct() {
     return;
   }
 
+  const selectedCategory = categories.find((category) => category.id === productCategoryIdInput.value);
+
+  if (!selectedCategory) {
+    setStatusMessage(authStatus, "Selecciona una categoria destino valida.", true);
+    return;
+  }
+
   const payload = {
     category_id: productCategoryIdInput.value,
-    category_label: productCategoryLabelInput.value.trim(),
+    category_label: selectedCategory.title,
     name: productNameInput.value.trim(),
     description: productDescriptionInput.value.trim(),
     price_cop: Number(productPriceInput.value || 0),
     image_src: productImageSrcInput.value.trim(),
-    image_position: productImagePositionInput.value.trim() || "center",
+    image_position: "center",
     badge: productBadgeInput.value.trim(),
     badge_type: productBadgeTypeInput.value,
     is_featured: productFeaturedInput.checked,
@@ -773,6 +937,55 @@ async function saveProduct() {
   await refreshContent(true);
   resetProductForm();
   setStatusMessage(authStatus, "Producto guardado correctamente.");
+}
+
+async function uploadProductImage() {
+  if (!supabase || !currentUser || !productImageFileInput || !productImageSrcInput || !productCategoryIdInput) {
+    return;
+  }
+
+  const file = productImageFileInput.files?.[0];
+
+  if (!file) {
+    setStatusMessage(productImageStatus, "Selecciona un archivo antes de subirlo.", true);
+    return;
+  }
+
+  const category = categories.find((item) => item.id === productCategoryIdInput.value);
+
+  if (!category) {
+    setStatusMessage(productImageStatus, "Selecciona primero una categoria destino.", true);
+    return;
+  }
+
+  const extension = file.name.includes(".") ? file.name.split(".").pop() : "";
+  const baseName = file.name.replace(/\.[^.]+$/, "");
+  const safeName = sanitizeFilename(baseName) || `producto-${Date.now()}`;
+  const filePath = `${category.slug}/${Date.now()}-${safeName}${extension ? `.${extension.toLowerCase()}` : ""}`;
+
+  setStatusMessage(productImageStatus, "Subiendo imagen...");
+
+  const { error: uploadError } = await supabase.storage.from(storageBucket).upload(filePath, file, {
+    cacheControl: "3600",
+    upsert: false,
+    contentType: file.type || undefined,
+  });
+
+  if (uploadError) {
+    setStatusMessage(productImageStatus, `No se pudo subir la imagen: ${uploadError.message}`, true);
+    return;
+  }
+
+  const { data } = supabase.storage.from(storageBucket).getPublicUrl(filePath);
+
+  if (!data?.publicUrl) {
+    setStatusMessage(productImageStatus, "La imagen subio, pero no se pudo obtener la URL publica.", true);
+    return;
+  }
+
+  productImageSrcInput.value = data.publicUrl;
+  productImageFileInput.value = "";
+  setStatusMessage(productImageStatus, "Imagen subida correctamente.");
 }
 
 async function deleteProduct(productId) {
@@ -963,15 +1176,15 @@ function initializeBaseUi() {
 
       const { error } = await supabase
         .from("categories")
-        .upsert(categoryPageOptions.map((option, index) => ({
-          number_label: String(index + 1).padStart(2, "0"),
-          title: option.label,
-          description: categories.find((item) => item.href === option.value)?.description || "",
-          href: option.value,
-          tag: "Categoria TREX",
-          is_published: true,
-          created_by: currentUser?.id ?? null,
-        })), { onConflict: "href" });
+        .upsert(
+          defaultDynamicCategories.map((category) => ({
+            ...category,
+            href: `categoria.html?slug=${encodeURIComponent(category.slug)}`,
+            is_published: true,
+            created_by: currentUser?.id ?? null,
+          })),
+          { onConflict: "href" }
+        );
 
       if (error) {
         setStatusMessage(authStatus, `No se pudieron restaurar categorias: ${error.message}`, true);
@@ -993,6 +1206,12 @@ function initializeBaseUi() {
 
   if (productCancelButton) {
     productCancelButton.addEventListener("click", () => resetProductForm());
+  }
+
+  if (uploadImageButton) {
+    uploadImageButton.addEventListener("click", async () => {
+      await uploadProductImage();
+    });
   }
 }
 

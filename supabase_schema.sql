@@ -13,6 +13,7 @@ create table if not exists public.categories (
   number_label text not null,
   title text not null,
   description text not null,
+  slug text unique,
   href text not null unique,
   tag text,
   is_published boolean not null default true,
@@ -98,20 +99,6 @@ for select
 to authenticated
 using (auth.uid() is not null and auth.uid() = id);
 
-drop policy if exists "profiles_admin_select_all" on public.profiles;
-create policy "profiles_admin_select_all"
-on public.profiles
-for select
-to authenticated
-using (
-  exists (
-    select 1
-    from public.profiles p
-    where p.id = auth.uid()
-      and p.role = 'admin'
-  )
-);
-
 drop policy if exists "categories_public_read" on public.categories;
 create policy "categories_public_read"
 on public.categories
@@ -170,12 +157,12 @@ with check (
   )
 );
 
-insert into public.categories (number_label, title, description, href, tag, is_published)
+insert into public.categories (number_label, title, description, slug, href, tag, is_published)
 values
-  ('01', 'Armas traumaticas', 'Pistolas, revolveres y accesorios con presencia visual fuerte.', 'traumaticas.html', 'Categoria TREX', true),
-  ('02', 'Aire comprimido', 'Rifles, pistolas y municiones para tiro deportivo y practica.', 'aire-comprimido.html', 'Categoria TREX', true),
-  ('03', 'Airsoft tactico', 'Replicas, BBs, chalecos, cascos y plataformas de juego.', 'airsoft.html', 'Categoria TREX', true),
-  ('04', 'Accesorios', 'Miras, linternas, estuches, protectores y repuestos.', 'accesorios.html', 'Categoria TREX', true)
+  ('01', 'Armas traumaticas', 'Pistolas, revolveres y accesorios con presencia visual fuerte.', 'armas-traumaticas', 'categoria.html?slug=armas-traumaticas', 'Categoria TREX', true),
+  ('02', 'Aire comprimido', 'Rifles, pistolas y municiones para tiro deportivo y practica.', 'aire-comprimido', 'categoria.html?slug=aire-comprimido', 'Categoria TREX', true),
+  ('03', 'Airsoft tactico', 'Replicas, BBs, chalecos, cascos y plataformas de juego.', 'airsoft-tactico', 'categoria.html?slug=airsoft-tactico', 'Categoria TREX', true),
+  ('04', 'Accesorios', 'Miras, linternas, estuches, protectores y repuestos.', 'accesorios', 'categoria.html?slug=accesorios', 'Categoria TREX', true)
 on conflict (href) do nothing;
 
 insert into public.products (
@@ -193,12 +180,12 @@ insert into public.products (
 )
 values
   (
-    (select id from public.categories where href = 'aire-comprimido.html'),
+    (select id from public.categories where slug = 'aire-comprimido'),
     'Airsoft',
     'ASG CZ P-09',
     'Pistola de perfil tactico con presentacion fuerte y fondo verde TREX.',
     890000,
-    'ASGCZP-09.jpeg',
+    'img/productos/traumaticas/ASGCZP-09.jpeg',
     'center 38%',
     'Nuevo',
     '',
@@ -206,12 +193,12 @@ values
     true
   ),
   (
-    (select id from public.categories where href = 'traumaticas.html'),
+    (select id from public.categories where slug = 'armas-traumaticas'),
     'Traumatica',
     'ASG Dan Wesson 6PL Silver',
     'Revolver de impacto visual premium con accesorios y acabado metalico.',
     1450000,
-    'ASGDAN.jpeg',
+    'img/productos/traumaticas/ASGDAN.jpeg',
     'center 36%',
     'Oferta',
     'offer',
@@ -219,12 +206,12 @@ values
     true
   ),
   (
-    (select id from public.categories where href = 'airsoft.html'),
+    (select id from public.categories where slug = 'airsoft-tactico'),
     'Clasica',
     'Walther P38',
     'Modelo iconico con empunadura en madera y perfil de coleccion.',
     1190000,
-    'waltherp38.jpeg',
+    'img/productos/airsoft/waltherp38.jpeg',
     'center 34%',
     'Top',
     '',
@@ -232,3 +219,64 @@ values
     true
   )
 on conflict do nothing;
+
+drop policy if exists "Public can view product images" on storage.objects;
+create policy "Public can view product images"
+on storage.objects
+for select
+to public
+using (bucket_id = 'trex-product-images');
+
+drop policy if exists "Admins can upload product images" on storage.objects;
+create policy "Admins can upload product images"
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'trex-product-images'
+  and exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  )
+);
+
+drop policy if exists "Admins can update product images" on storage.objects;
+create policy "Admins can update product images"
+on storage.objects
+for update
+to authenticated
+using (
+  bucket_id = 'trex-product-images'
+  and exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  )
+)
+with check (
+  bucket_id = 'trex-product-images'
+  and exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  )
+);
+
+drop policy if exists "Admins can delete product images" on storage.objects;
+create policy "Admins can delete product images"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'trex-product-images'
+  and exists (
+    select 1
+    from public.profiles p
+    where p.id = auth.uid()
+      and p.role = 'admin'
+  )
+);
