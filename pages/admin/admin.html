@@ -14,16 +14,16 @@
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/pages/admin/admin.css" />
   </head>
   <body data-page="admin">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
-          <img class="brand-logo" src="img/branding/logotrex.jpeg" alt="Logo TREX" />
+          <img class="brand-logo" src="/assets/img/branding/logotrex.jpeg" alt="Logo TREX" />
           <div>
             <p class="eyebrow">Panel de control</p>
-            <a class="brand-name" href="index.html">TREX Admin</a>
+            <a class="brand-name" href="/index.html">TREX Admin</a>
           </div>
         </div>
 
@@ -33,20 +33,20 @@
         </button>
 
         <nav class="main-nav">
-          <a href="index.html">Inicio</a>
-          <a href="index.html#categorias">Categorias</a>
-          <a href="carrito.html">Carrito</a>
-          <a href="admin.html">Admin</a>
+          <a href="/index.html">Inicio</a>
+          <a href="/index.html#categorias">Categorias</a>
+          <a href="/pages/carrito/carrito.html">Carrito</a>
+          <a href="/pages/admin/admin.html">Admin</a>
         </nav>
 
-        <a class="cta-chip" href="index.html">Ver sitio</a>
+        <a class="cta-chip" href="/index.html">Ver sitio</a>
 
         <button class="cart-trigger" id="logout-button" type="button" aria-label="Cerrar sesion">
           <span>Cerrar sesion</span>
         </button>
 
-        <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
-          <img class="cart-icon" src="img/ui/cart-icon.svg" alt="" aria-hidden="true" />
+        <a class="cart-trigger" href="/pages/carrito/carrito.html" aria-label="Ir al carrito de compras">
+          <img class="cart-icon" src="/assets/img/ui/cart-icon.svg" alt="" aria-hidden="true" />
           <span>Carrito</span>
           <span class="cart-count" id="cart-count">0</span>
         </a>
@@ -213,7 +213,7 @@
       </section>
     </div>
 
-    <script src="app-config.js"></script>
-    <script type="module" src="script.js"></script>
+    <script src="/shared/js/app-config.js"></script>
+    <script type="module" src="/pages/admin/admin.js"></script>
   </body>
 </html>

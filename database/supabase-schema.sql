@@ -159,10 +159,11 @@ with check (
 
 insert into public.categories (number_label, title, description, slug, href, tag, is_published)
 values
-  ('01', 'Armas traumaticas', 'Pistolas, revolveres y accesorios con presencia visual fuerte.', 'armas-traumaticas', 'categoria.html?slug=armas-traumaticas', 'Categoria TREX', true),
-  ('02', 'Aire comprimido', 'Rifles, pistolas y municiones para tiro deportivo y practica.', 'aire-comprimido', 'categoria.html?slug=aire-comprimido', 'Categoria TREX', true),
-  ('03', 'Airsoft tactico', 'Replicas, BBs, chalecos, cascos y plataformas de juego.', 'airsoft-tactico', 'categoria.html?slug=airsoft-tactico', 'Categoria TREX', true),
-  ('04', 'Accesorios', 'Miras, linternas, estuches, protectores y repuestos.', 'accesorios', 'categoria.html?slug=accesorios', 'Categoria TREX', true)
+  ('01', 'Armas traumaticas', 'Pistolas, revolveres y accesorios con presencia visual fuerte.', 'armas-traumaticas', '/pages/categorias/traumaticas/traumaticas.html', 'Categoria TREX', true),
+  ('02', 'Fogueo', 'Modelos de fogueo, accesorios compatibles y presentacion comercial especializada.', 'fogueo', '/pages/categorias/fogueo/fogueo.html', 'Categoria TREX', true),
+  ('03', 'Aire comprimido', 'Rifles, pistolas y municiones para tiro deportivo y practica.', 'aire-comprimido', '/pages/categorias/aire-comprimido/aire-comprimido.html', 'Categoria TREX', true),
+  ('04', 'Airsoft tactico', 'Replicas, BBs, chalecos, cascos y plataformas de juego.', 'airsoft-tactico', '/pages/categorias/airsoft/airsoft.html', 'Categoria TREX', true),
+  ('05', 'Accesorios', 'Miras, linternas, estuches, protectores y repuestos.', 'accesorios', '/pages/categorias/accesorios/accesorios.html', 'Categoria TREX', true)
 on conflict (href) do nothing;
 
 insert into public.products (
@@ -185,7 +186,7 @@ values
     'ASG CZ P-09',
     'Pistola de perfil tactico con presentacion fuerte y fondo verde TREX.',
     890000,
-    'img/productos/traumaticas/ASGCZP-09.jpeg',
+    '/assets/img/productos/traumaticas/ASGCZP-09.jpeg',
     'center 38%',
     'Nuevo',
     '',
@@ -198,7 +199,7 @@ values
     'ASG Dan Wesson 6PL Silver',
     'Revolver de impacto visual premium con accesorios y acabado metalico.',
     1450000,
-    'img/productos/traumaticas/ASGDAN.jpeg',
+    '/assets/img/productos/traumaticas/ASGDAN.jpeg',
     'center 36%',
     'Oferta',
     'offer',
@@ -211,7 +212,7 @@ values
     'Walther P38',
     'Modelo iconico con empunadura en madera y perfil de coleccion.',
     1190000,
-    'img/productos/airsoft/waltherp38.jpeg',
+    '/assets/img/productos/airsoft/waltherp38.jpeg',
     'center 34%',
     'Top',
     '',

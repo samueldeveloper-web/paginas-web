@@ -3,10 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Accesorios | TREX</title>
+    <title>Aire Comprimido | TREX</title>
     <meta
       name="description"
-      content="Categoria TREX de accesorios con visual comercial y acceso al carrito."
+      content="Categoria TREX de aire comprimido con visual comercial y acceso al carrito."
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,16 +14,16 @@
       href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Manrope:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="/pages/categorias/aire-comprimido/aire-comprimido.css" />
   </head>
-  <body data-page="public" data-category-href="accesorios.html">
+  <body data-page="public" data-category-slug="aire-comprimido">
     <div class="site-shell">
       <header class="topbar">
         <div class="brand-lockup">
-          <img class="brand-logo" src="img/branding/logotrex.jpeg" alt="Logo TREX" />
+          <img class="brand-logo" src="/assets/img/branding/logotrex.jpeg" alt="Logo TREX" />
           <div>
             <p class="eyebrow">Armas deportivas</p>
-            <a class="brand-name" href="index.html">TREX</a>
+            <a class="brand-name" href="/index.html">TREX</a>
           </div>
         </div>
 
@@ -33,17 +33,17 @@
         </button>
 
         <nav class="main-nav">
-          <a href="index.html#categorias">Categorias</a>
-          <a href="index.html#destacados">Destacados</a>
-          <a href="index.html#beneficios">Beneficios</a>
-          <a href="index.html#contacto">Contacto</a>
-          <a href="admin.html">Admin</a>
+          <a href="/index.html#categorias">Categorias</a>
+          <a href="/index.html#destacados">Destacados</a>
+          <a href="/index.html#beneficios">Beneficios</a>
+          <a href="/index.html#contacto">Contacto</a>
+          <a href="/pages/admin/admin.html">Admin</a>
         </nav>
 
-        <a class="cta-chip" href="index.html">Volver al inicio</a>
+        <a class="cta-chip" href="/index.html">Volver al inicio</a>
 
-        <a class="cart-trigger" href="carrito.html" aria-label="Ir al carrito de compras">
-          <img class="cart-icon" src="img/ui/cart-icon.svg" alt="" aria-hidden="true" />
+        <a class="cart-trigger" href="/pages/carrito/carrito.html" aria-label="Ir al carrito de compras">
+          <img class="cart-icon" src="/assets/img/ui/cart-icon.svg" alt="" aria-hidden="true" />
           <span>Carrito</span>
           <span class="cart-count" id="cart-count">0</span>
         </a>
@@ -53,26 +53,26 @@
         <section class="cart-hero">
           <div>
             <p class="eyebrow" id="category-tag">Categoria TREX</p>
-            <h1 id="category-title">Accesorios</h1>
+            <h1 id="category-title">Aire comprimido</h1>
             <p class="hero-text" id="category-description">
-              Miras, estuches, protecciones y complementos para una tienda
-              deportiva con navegacion clara y visual potente.
+              Rifles y pistolas para practica, precision y experiencia deportiva
+              con lenguaje visual sobrio y tecnico.
             </p>
           </div>
-          <a class="btn btn-secondary" href="index.html#categorias">Ver mas categorias</a>
+          <a class="btn btn-secondary" href="/index.html#categorias">Ver mas categorias</a>
         </section>
 
         <section class="featured-products">
           <div class="section-heading">
             <p class="eyebrow">Seleccion</p>
-            <h2 id="category-heading">Todo lo que completa la experiencia TREX.</h2>
+            <h2 id="category-heading">Opciones destacadas para tiro deportivo y practica.</h2>
           </div>
           <div class="product-grid" id="category-product-grid"></div>
         </section>
       </main>
     </div>
 
-    <script src="app-config.js"></script>
-    <script type="module" src="script.js"></script>
+    <script src="/shared/js/app-config.js"></script>
+    <script type="module" src="/pages/categorias/aire-comprimido/aire-comprimido.js"></script>
   </body>
 </html>

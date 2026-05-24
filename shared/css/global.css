@@ -1,27 +1,8 @@
-:root {
-  --bg: #040604;
-  --bg-soft: #0a0f09;
-  --panel: rgba(10, 15, 10, 0.92);
-  --panel-strong: #101710;
-  --line: rgba(112, 255, 86, 0.16);
-  --text: #f4fff0;
-  --muted: #94af92;
-  --accent: #7dff5e;
-  --accent-strong: #a7ff45;
-  --danger: #d4ff7d;
-  --shadow: 0 20px 70px rgba(0, 0, 0, 0.6);
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
+@import url("./variables.css");
+@import url("./reset.css");
+@import url("./animations.css");
 
 body {
-  margin: 0;
   font-family: "Manrope", sans-serif;
   color: var(--text);
   background:
@@ -41,11 +22,6 @@ body::before {
   background-size: 44px 44px;
   mask-image: radial-gradient(circle at center, black 45%, transparent 90%);
   opacity: 0.3;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
 }
 
 .site-shell {
@@ -977,7 +953,7 @@ a {
 .product-art-1 {
   background:
     linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.64)),
-    url("img/productos/traumaticas/ASGCZP-09.jpeg"),
+    url("/assets/img/productos/traumaticas/ASGCZP-09.jpeg"),
     radial-gradient(circle at 30% 25%, rgba(125, 255, 94, 0.26), transparent 20%),
     linear-gradient(145deg, #223123, #101310);
   background-position: center, center 38%, center, center;
@@ -987,7 +963,7 @@ a {
 .product-art-2 {
   background:
     linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.7)),
-    url("img/productos/traumaticas/ASGDAN.jpeg"),
+    url("/assets/img/productos/traumaticas/ASGDAN.jpeg"),
     radial-gradient(circle at 70% 18%, rgba(167, 255, 69, 0.22), transparent 18%),
     linear-gradient(145deg, #1f2c1d, #090c09);
   background-position: center, center 36%, center, center;
@@ -997,7 +973,7 @@ a {
 .product-art-3 {
   background:
     linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.72)),
-    url("img/productos/airsoft/waltherp38.jpeg"),
+    url("/assets/img/productos/airsoft/waltherp38.jpeg"),
     radial-gradient(circle at 25% 12%, rgba(125, 255, 94, 0.22), transparent 16%),
     linear-gradient(145deg, #18271c, #070907);
   background-position: center, center 34%, center, center;
