@@ -3,6 +3,7 @@ import { addToCart, checkoutOnWhatsapp, clearCart, getCart, getCartTotals, onCar
 import { $, $$, escapeHtml, formatCurrency, getCategoryUrl } from "./utils.js";
 import { createProductCard } from "../components/cards/product-card.js";
 import { initNavbar } from "../components/navbar/navbar.js";
+import { initMotion } from "./motion.js";
 
 const cartItemTemplate = (item, compact = false) => `
   <article class="${compact ? "quick-cart-item" : "cart-item"}">
@@ -114,6 +115,7 @@ export const initCartUi = ({ quick = true } = {}) => {
 export const initBaseUi = ({ quickCart = true } = {}) => {
   initNavbar();
   initCartUi({ quick: quickCart });
+  initMotion();
   if ($("#year")) $("#year").textContent = new Date().getFullYear();
 };
 

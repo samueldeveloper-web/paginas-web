@@ -1,18 +1,45 @@
 /* VARIABLES */
 :root {
-  --bg: #040604;
-  --bg-soft: #0a0f09;
-  --panel: rgba(10, 15, 10, 0.92);
-  --panel-strong: #101710;
-  --line: rgba(112, 255, 86, 0.16);
-  --text: #f4fff0;
-  --muted: #94af92;
-  --accent: #7dff5e;
-  --accent-strong: #a7ff45;
-  --danger: #d4ff7d;
+  --font-display: "Hanken Grotesk", "Geist", system-ui, sans-serif;
+  --font-body: "Geist", "Hanken Grotesk", system-ui, sans-serif;
+
+  --bg: #050605;
+  --bg-deep: #0a0a0a;
+  --bg-elevated: #101311;
+  --surface: rgba(14, 17, 15, 0.76);
+  --surface-strong: rgba(18, 23, 20, 0.94);
+  --surface-soft: rgba(195, 244, 0, 0.06);
+
+  --text: #f7f8ef;
+  --text-strong: #ffffff;
+  --muted: #a8b0a3;
+  --muted-strong: #c8d0c2;
+
+  --accent: #ccff00;
+  --accent-strong: #c3f400;
+  --accent-soft: rgba(204, 255, 0, 0.14);
+  --accent-line: rgba(204, 255, 0, 0.32);
+  --danger: #ff5470;
+
+  --gunmetal: #1d2422;
+  --carbon: #151816;
+  --steel: #758075;
+  --ice: #dfe8d8;
+
+  --radius-xs: 8px;
   --radius-sm: 12px;
-  --radius-md: 18px;
-  --radius-lg: 24px;
-  --shadow: 0 20px 70px rgba(0, 0, 0, 0.6);
+  --radius-md: 16px;
+  --radius-lg: 22px;
+
   --container: 1180px;
+  --section-gap: clamp(76px, 10vw, 132px);
+  --nav-height: 82px;
+
+  --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.28);
+  --shadow-md: 0 22px 70px rgba(0, 0, 0, 0.48);
+  --shadow-glow: 0 0 42px rgba(204, 255, 0, 0.24);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(204, 255, 0, 0.22);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
