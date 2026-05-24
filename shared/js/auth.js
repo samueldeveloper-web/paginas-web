@@ -1,6 +1,24 @@
 import { ROUTES } from "./constants.js";
 import { hasSupabaseConfig, supabase } from "./config.js";
 
+const clearSupabaseStorage = () => {
+  const storageKeys = [];
+
+  for (let index = 0; index < window.localStorage.length; index += 1) {
+    const key = window.localStorage.key(index);
+    if (key?.startsWith("sb-") || key?.includes("supabase")) storageKeys.push(["localStorage", key]);
+  }
+
+  for (let index = 0; index < window.sessionStorage.length; index += 1) {
+    const key = window.sessionStorage.key(index);
+    if (key?.startsWith("sb-") || key?.includes("supabase")) storageKeys.push(["sessionStorage", key]);
+  }
+
+  storageKeys.forEach(([type, key]) => {
+    window[type].removeItem(key);
+  });
+};
+
 export const ensureSupabase = () => {
   if (!hasSupabaseConfig || !supabase) {
     throw new Error("Falta configurar Supabase en shared/js/app-config.js");
@@ -10,7 +28,18 @@ export const ensureSupabase = () => {
 export const getSessionUser = async () => {
   ensureSupabase();
   const { data, error } = await supabase.auth.getUser();
-  if (error) throw error;
+
+  if (error) {
+    const message = error.message?.toLowerCase() || "";
+    const isMissingSession = message.includes("auth session missing") || error.name === "AuthSessionMissingError";
+
+    if (isMissingSession) {
+      return null;
+    }
+
+    throw error;
+  }
+
   return data.user ?? null;
 };
 
@@ -54,8 +83,11 @@ export const loginAdmin = async ({ email, password }) => {
 };
 
 export const logout = async () => {
-  ensureSupabase();
-  await supabase.auth.signOut();
+  if (supabase) {
+    await supabase.auth.signOut().catch(() => {});
+  }
+
+  clearSupabaseStorage();
   window.location.replace(ROUTES.login);
 };
 

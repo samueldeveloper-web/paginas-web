@@ -153,7 +153,6 @@ const handleDeleteProduct = async (productId) => {
 };
 
 const bindAdminEvents = () => {
-  $("#logout-button")?.addEventListener("click", logout);
   $("#category-cancel")?.addEventListener("click", resetCategoryForm);
   $("#product-cancel")?.addEventListener("click", resetProductForm);
 
@@ -207,6 +206,7 @@ const runAdminAction = async (action) => {
 };
 
 initBaseUi({ quickCart: false });
+$("#logout-button")?.addEventListener("click", logout);
 
 if (!hasSupabaseConfig) {
   setStatusMessage(authStatus, "Configura Supabase en shared/js/app-config.js para habilitar login y admin.", true);
