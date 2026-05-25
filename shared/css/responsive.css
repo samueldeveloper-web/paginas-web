@@ -1,7 +1,7 @@
 /* RESPONSIVE */
 @media (max-width: 1180px) {
   .topbar {
-    grid-template-columns: auto 1fr auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto auto;
   }
 
   .main-nav {
@@ -36,8 +36,10 @@
 
   .hero {
     grid-template-columns: 1fr;
-    align-items: end;
-    padding-top: calc(var(--nav-height) + 92px);
+    align-items: center;
+    padding-top: calc(var(--nav-height) + clamp(92px, 12vh, 142px));
+    padding-bottom: clamp(82px, 10vh, 128px);
+    margin-bottom: 0;
   }
 
   .hero-copy {
@@ -77,11 +79,13 @@
 @media (max-width: 900px) {
   :root {
     --nav-height: 72px;
+    --h1: clamp(3rem, 11vw, 6.4rem);
+    --h2: clamp(2rem, 7.5vw, 4rem);
   }
 
   .topbar {
     top: 12px;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
   }
 
   .topbar > .cta-chip {
@@ -115,7 +119,7 @@
   }
 
   .category-card {
-    min-height: 300px;
+    min-height: 280px;
   }
 
   .product-footer {
@@ -132,6 +136,9 @@
   :root {
     --page-pad: 12px;
     --section-gap: clamp(58px, 16vw, 84px);
+    --h1: clamp(2.75rem, 15vw, 4.8rem);
+    --h2: clamp(1.85rem, 10vw, 3.25rem);
+    --h3: clamp(1.2rem, 6vw, 1.65rem);
   }
 
   .site-shell {
@@ -144,6 +151,8 @@
     min-height: 64px;
     padding: 9px;
     border-radius: var(--radius-sm);
+    grid-template-columns: minmax(0, 1fr) auto auto auto;
+    gap: 8px;
   }
 
   .brand-logo {
@@ -161,9 +170,18 @@
     padding: 0 11px;
   }
 
-  .cart-trigger span:not(.cart-count),
-  .cart-trigger .cart-icon {
+  .cart-trigger:not(#logout-button) span:not(.cart-count),
+  .cart-trigger:not(#logout-button) .cart-icon {
     display: none;
+  }
+
+  #logout-button span {
+    font-size: 0;
+  }
+
+  #logout-button span::after {
+    content: "Salir";
+    font-size: 0.72rem;
   }
 
   .menu-toggle {
@@ -172,14 +190,21 @@
   }
 
   .hero {
+    --hero-shift: clamp(8px, 2.8vh, 22px);
     min-height: auto;
     padding-top: calc(var(--nav-height) + 72px);
+    padding-bottom: 72px;
+    margin-bottom: 0;
+  }
+
+  .category-strip {
+    padding-top: clamp(76px, 18vw, 110px);
   }
 
   .hero-copy h1 {
-    max-width: 10.5ch;
-    line-height: 0.9;
-    letter-spacing: -0.045em;
+    max-width: 11ch;
+    line-height: 0.96;
+    letter-spacing: 0;
   }
 
   .hero-actions,
@@ -220,7 +245,11 @@
 
   .panel-card-accent,
   .category-card {
-    min-height: 330px;
+    min-height: 280px;
+  }
+
+  .product-art {
+    aspect-ratio: 4 / 3;
   }
 
   .cart-item {
@@ -245,7 +274,7 @@
   }
 
   .hero-copy h1 {
-    font-size: clamp(3rem, 18vw, 4.6rem);
+    font-size: clamp(2.55rem, 15.5vw, 4rem);
   }
 
   .section-heading h2,
